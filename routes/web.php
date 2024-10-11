@@ -15,17 +15,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [AuthController::class, 'processLogin'])->name('auth.web.processLogin');
 
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', [AuthController::class, 'processLogin'])->name('auth.web.processLogin');
     Route::post('/handle-login', [AuthController::class, 'handleLogin'])->name('auth.web.handleLogin');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.web.logout');
-    Route::post('/login', [AuthApi::class, 'login'])->name('auth.login');
-    Route::post('/register', [AuthApi::class, 'register'])->name('auth.register');
-    Route::post('/logout', [AuthApi::class, 'logout'])->name('auth.logout');
 });
 
 Route::group(['prefix' => 'error'], function () {
@@ -46,7 +41,7 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 /* Auth api */
-Route::group(['prefix' => 'api/auth', 'middleware' => ['auth.api']], function () {
+Route::group(['prefix' => 'api', 'middleware' => ['auth.api']], function () {
     require_once __DIR__ . '/api/auth.php';
 });
 

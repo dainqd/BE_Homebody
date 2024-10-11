@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthApi extends Controller
@@ -74,14 +75,18 @@ class AuthApi extends Controller
             $user = User::where('email', $loginRequest)->orWhere('phone', $loginRequest)->first();
             if (!$user) {
                 return response($newController->returnMessage('User not found!'), 404);
-            } else {
-                if ($user->status == UserStatus::INACTIVE) {
-                    return response($newController->returnMessage('User not active!'), 400);
-                } else if ($user->status == UserStatus::BLOCKED) {
-                    return response($newController->returnMessage('User has been blocked!'), 400);
-                } else if ($user->status == UserStatus::DELETED) {
-                    return response($newController->returnMessage('User is deleted!'), 400);
-                }
+            }
+
+            if ($user->status == UserStatus::INACTIVE) {
+                return response($newController->returnMessage('User not active!'), 400);
+            }
+
+            if ($user->status == UserStatus::BLOCKED) {
+                return response($newController->returnMessage('User has been blocked!'), 400);
+            }
+
+            if ($user->status == UserStatus::DELETED) {
+                return response($newController->returnMessage('User is deleted!'), 400);
             }
 
             if (Auth::attempt($credentials)) {

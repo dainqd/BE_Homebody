@@ -68,8 +68,6 @@ class AuthController extends Controller
                 $response['role'] = $role->name;
                 $response['accessToken'] = $token;
 
-                $this->setCookie($token);
-
                 return redirect(route('admin.home'));
             }
 
@@ -81,9 +79,8 @@ class AuthController extends Controller
         }
     }
 
-    private function setCookie($token)
-    {
-        $cookie = cookie('accessToken', $token, 60);
+    public function setCookie() {
+        $cookie = cookie('accessToken', 'LaravelUser', 60);
     }
 
 
