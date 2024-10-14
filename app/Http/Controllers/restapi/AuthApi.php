@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthApi extends Controller
@@ -20,7 +21,7 @@ class AuthApi extends Controller
 
     /**
      * @OA\Post(
-     *     path="/auth/login",
+     *     path="/api/auth/login",
      *     summary="User login",
      *     description="User login",
      *     tags={"Auth"},
@@ -74,14 +75,18 @@ class AuthApi extends Controller
             $user = User::where('email', $loginRequest)->orWhere('phone', $loginRequest)->first();
             if (!$user) {
                 return response($newController->returnMessage('User not found!'), 404);
-            } else {
-                if ($user->status == UserStatus::INACTIVE) {
-                    return response($newController->returnMessage('User not active!'), 400);
-                } else if ($user->status == UserStatus::BLOCKED) {
-                    return response($newController->returnMessage('User has been blocked!'), 400);
-                } else if ($user->status == UserStatus::DELETED) {
-                    return response($newController->returnMessage('User is deleted!'), 400);
-                }
+            }
+
+            if ($user->status == UserStatus::INACTIVE) {
+                return response($newController->returnMessage('User not active!'), 400);
+            }
+
+            if ($user->status == UserStatus::BLOCKED) {
+                return response($newController->returnMessage('User has been blocked!'), 400);
+            }
+
+            if ($user->status == UserStatus::DELETED) {
+                return response($newController->returnMessage('User is deleted!'), 400);
             }
 
             if (Auth::attempt($credentials)) {
@@ -101,6 +106,42 @@ class AuthApi extends Controller
         }
     }
 
+    /**
+     * Register a new user.
+     *
+     * @OA\Post(
+     *     path="/api/auth/register",
+     *     summary="Register a new user",
+     *     description="Register a new user",
+     *     tags={"Auth"},
+     *     operationId="register",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Nguy n V n A"),
+     *             @OA\Property(property="email", type="string", format="email", example="nguyenvana@gmail.com"),
+     *             @OA\Property(property="phone", type="string", example="0123456789"),
+     *             @OA\Property(property="password", type="string", format="password", example="123456"),
+     *             @OA\Property(property="password_confirm", type="string", format="password", example="123456"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Register success!"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Email invalid!"),
+     *         ),
+     *     ),
+     * )
+     */
     public function register(Request $request)
     {
         $newController = (new MainController());
