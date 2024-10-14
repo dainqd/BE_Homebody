@@ -123,7 +123,17 @@ class MainController extends Controller
 
     public function saveRoleUser($user_id)
     {
-        $role = Role::where('name', RoleName::USER)->first();
+        $this->saveRole($user_id, RoleName::USER);
+    }
+
+    public function saveRolePartner($user_id)
+    {
+        $this->saveRole($user_id, RoleName::PARTNER);
+    }
+
+    private function saveRole($user_id, $role_name)
+    {
+        $role = Role::where('name', $role_name)->first();
         $user_role = new RoleUser();
         $user_role->role_id = $role->id;
         $user_role->user_id = $user_id;

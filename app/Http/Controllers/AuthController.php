@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleName;
 use App\Enums\UserStatus;
 use App\Models\Role;
 use App\Models\RoleUser;
@@ -58,6 +59,18 @@ class AuthController extends Controller
                 return redirect()->back();
             }
 
+            $roleAdmin = Role::where('name', RoleName::ADMIN)->first();
+            if (!$roleAdmin){
+                alert()->error('Role admin not found!');
+                return redirect()->back();
+            }
+
+            $user_role = RoleUser::where('user_id', $user->id)->where('role_id', $roleAdmin->id)->first();
+            if (!$user_role){
+                alert()->error('User is not permission!');
+                return redirect()->back();
+            }
+
             if (Auth::attempt($credentials)) {
                 $token = JWTAuth::fromUser($user);
                 $user->save();
@@ -68,7 +81,8 @@ class AuthController extends Controller
                 $response['role'] = $role->name;
                 $response['accessToken'] = $token;
 
-                $this->setCookie($token);
+                $expiration_time = time() + 86400;
+                setCookie('accessToken', $token, $expiration_time, '/');
 
                 return redirect(route('admin.home'));
             }
