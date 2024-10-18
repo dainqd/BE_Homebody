@@ -201,7 +201,17 @@
                                     "phone": {
                                         "description": "Phone of the partner",
                                         "type": "string",
-                                        "example": "123 456 7890"
+                                        "example": "1234567890"
+                                    },
+                                    "password": {
+                                        "description": "Password of the partner",
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "password_confirm": {
+                                        "description": "Password confirmation of the partner",
+                                        "type": "string",
+                                        "example": "123456"
                                     }
                                 },
                                 "type": "object"
@@ -449,6 +459,274 @@
                     }
                 }
             }
+        },
+        "/api/admin/users/list": {
+            "get": {
+                "tags": [
+                    "Admin User"
+                ],
+                "summary": "Get all users",
+                "description": "Get all users",
+                "operationId": "4535d89fdc2ceafff4299f64b9849089",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Get users success!"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "user@example.com"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "phone": {
+                                                        "type": "string",
+                                                        "example": "123 456 7890"
+                                                    },
+                                                    "avatar": {
+                                                        "type": "string",
+                                                        "example": "http://example.com/avatar.jpg"
+                                                    },
+                                                    "total_balance": {
+                                                        "type": "integer",
+                                                        "example": 10000
+                                                    },
+                                                    "status": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "role_name": {
+                                                        "type": "string",
+                                                        "example": "Admin"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/users/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Admin User"
+                ],
+                "summary": "Get user detail by id",
+                "description": "Get user detail by id",
+                "operationId": "getUserDetailById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/admin/users/create": {
+            "post": {
+                "tags": [
+                    "Admin User"
+                ],
+                "summary": "Create a user",
+                "description": "Create a user",
+                "operationId": "ff4ff55b9a718e55c7a0a8866696b7d5",
+                "requestBody": {
+                    "description": "User info to be created",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Nguy n V n A"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "nguyenvana@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0123456789"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    },
+                                    "password_confirm": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/admin/users/update/{id}": {
+            "post": {
+                "tags": [
+                    "Admin User"
+                ],
+                "summary": "Update a user",
+                "description": "Update a user",
+                "operationId": "63fb8a0ad9a6fdcc0bf89c924a0daa3e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User info to be updated",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Nguy n V n A"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "nguyenvana@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0123456789"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    },
+                                    "password_confirm": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/admin/users/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Admin User"
+                ],
+                "summary": "Delete a user by ID",
+                "description": "Delete a user by ID",
+                "operationId": "3c41fd15108122b32d3aa0b3c3c929c8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -473,6 +751,10 @@
         {
             "name": "Admin Partner Register",
             "description": "Admin Partner Register"
+        },
+        {
+            "name": "Admin User",
+            "description": "Admin User"
         }
     ]
 }

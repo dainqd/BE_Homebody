@@ -236,8 +236,8 @@ class AdminPartnerRegisterApi extends Api
                 ];
 
                 Mail::send('layouts.email.join-partner-success', $data, function ($message) use ($email) {
-                    $message->to($email, 'Congratulatory email for successful partner registration')->subject('Congratulatory email for successful partner registration');
-                    $message->from('devfullstack@gmail.com', 'Congratulatory successful partner registration');
+                    $message->to($email, 'Partner registration notification email')->subject('Partner registration notification email');
+                    $message->from('devfullstack@gmail.com', 'Partner registration');
                 });
             }
 
