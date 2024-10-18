@@ -72,7 +72,7 @@
         });
 
         async function updatePartner(type, mode) {
-            loadingPage();
+            await loadingPage();
             let status;
             let update = 'N';
             if (type === 'approve') {
