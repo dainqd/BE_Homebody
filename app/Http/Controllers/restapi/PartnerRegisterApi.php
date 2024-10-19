@@ -76,35 +76,35 @@ class PartnerRegisterApi extends Controller
 
             $partner = PartnerRegister::where('email', $email)->orWhere('phone', $phone)->first();
             if ($partner) {
-                $data = returnMessage(1, '', 'Request already exists, please wait for us to verify');
-                return response($data, 201);
+                $data = returnMessage(1, 400, '', 'Request already exists, please wait for us to verify');
+                return response($data, 400);
             }
 
             $isEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
             if (!$isEmail) {
-                $data = returnMessage(-1, '', 'Email invalid!');
+                $data = returnMessage(1, 400, '', 'Email invalid!');
                 return response($data, 400);
             }
 
             $is_valid = User::checkEmail($email);
             if (!$is_valid) {
-                $data = returnMessage(-1, '', 'Email already exited!');
+                $data = returnMessage(1, 400, '', 'Email already exited!');
                 return response($data, 400);
             }
 
             $is_valid = User::checkPhone($phone);
             if (!$is_valid) {
-                $data = returnMessage(-1, '', 'Phone already exited!');
+                $data = returnMessage(1, 400, '', 'Phone already exited!');
                 return response($data, 400);
             }
 
             if ($password != $password_confirm) {
-                $data = returnMessage(-1, '', 'Password or Password Confirm incorrect!');
+                $data = returnMessage(1, 400, '', 'Password or Password Confirm incorrect!');
                 return response($data, 400);
             }
 
             if (strlen($password) < 5) {
-                $data = returnMessage(-1, '', 'Password invalid!');
+                $data = returnMessage(1, 400, '', 'Password invalid!');
                 return response($data, 400);
             }
 
@@ -126,10 +126,10 @@ class PartnerRegisterApi extends Controller
                 $message->from('devfullstack@gmail.com', 'Partner registration');
             });
 
-            $data = returnMessage(1, $partner, 'The request has been processed, please wait for us to verify the information.');
-            return response($data, 200);
+            $data = returnMessage(1, 200, $partner, 'The request has been processed, please wait for us to verify the information.');
+            return response($data, 400);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }

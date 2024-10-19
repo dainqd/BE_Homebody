@@ -88,7 +88,7 @@ class AdminPartnerRegisterApi extends Api
             ->orderByDesc('id')
             ->get();
 
-        $data = returnMessage(1, $partners, "Success");
+        $data = returnMessage(1, 200, $partners, "Success");
         return response($data, 200);
     }
 
@@ -131,10 +131,10 @@ class AdminPartnerRegisterApi extends Api
     {
         $partner = PartnerRegister::find($id);
         if (!$partner || $partner->status == PartnerRegisterStatus::DELETED) {
-            $data = returnMessage(-1, "Partner not found", null);
+            $data = returnMessage(-1, 400, "Partner not found", null);
             return response($data, 404);
         }
-        $data = returnMessage(1, $partner, "Success");
+        $data = returnMessage(1, 200, $partner, "Success");
         return response($data, 200);
     }
 
@@ -199,7 +199,7 @@ class AdminPartnerRegisterApi extends Api
             $is_update = $request->input('update');
             $partner = PartnerRegister::find($id);
             if (!$partner || $partner->status == PartnerRegisterStatus::DELETED) {
-                $data = returnMessage(-1, "Partner not found", null);
+                $data = returnMessage(-1, 400, "Partner not found", null);
                 return response($data, 404);
             }
 
@@ -208,7 +208,7 @@ class AdminPartnerRegisterApi extends Api
             }
 
             if ($partner->status != PartnerRegisterStatus::PENDING) {
-                $data = returnMessage(-1, "Partner already approved or rejected", 'Cannot update partner already approved or rejected!');
+                $data = returnMessage(-1, 400, "Partner already approved or rejected", 'Cannot update partner already approved or rejected!');
                 return response($data, 400);
             }
 
@@ -241,10 +241,10 @@ class AdminPartnerRegisterApi extends Api
                 });
             }
 
-            $data = returnMessage(1, $partner, 'Update success!');
+            $data = returnMessage(1, 200, $partner, 'Update success!');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
@@ -286,16 +286,16 @@ class AdminPartnerRegisterApi extends Api
         try {
             $partner = PartnerRegister::find($id);
             if (!$partner || $partner->status == PartnerRegisterStatus::DELETED) {
-                $data = returnMessage(-1, "Partner not found", null);
+                $data = returnMessage(-1, 400, "Partner not found", null);
                 return response($data, 404);
             }
 
             $partner->status = PartnerRegisterStatus::DELETED;
             $partner->save();
-            $data = returnMessage(1, $partner, 'Delete success!');
+            $data = returnMessage(1, 200, $partner, 'Delete success!');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }

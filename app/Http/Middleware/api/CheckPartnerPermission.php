@@ -29,12 +29,16 @@ class CheckPartnerPermission
                 return $next($request);
             }
         } catch (TokenInvalidException $e) {
-            return response(['status' => 'Token is Invalid'], 403);
+            $data = returnMessage(1, 400, '', 'Token is Invalid!');
+            return response($data, 400);
         } catch (TokenExpiredException $e) {
-            return response(['status' => 'Token is Expired'], 403);
+            $data = returnMessage(1, 444, '', 'Token is Expired');
+            return response($data, 444);
         } catch (\Exception $e) {
-            return response(['status' => 'Authorization Token not found'], 401);
+            $data = returnMessage(1, 401, '', 'Authorization Token not found');
+            return response($data, 401);
         }
-        return response(['status' => 'Forbidden: You don’t have permission to access [directory] on this server'], 403);
+        $data = returnMessage(1, 403, '', 'Forbidden: You don’t have permission to access [directory] on this server');
+        return response($data, 403);
     }
 }

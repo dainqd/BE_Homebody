@@ -102,7 +102,7 @@ class AdminUserApi extends Controller
             ->select('users.*', 'roles.name as role_name')
             ->get();
 
-        $data = returnMessage(1, $users, 'Get users success!');
+        $data = returnMessage(1, 200, $users, 'Get users success!');
         return response($data, 200);
     }
 
@@ -137,9 +137,9 @@ class AdminUserApi extends Controller
     {
         $user = User::where('users.status', '!=', UserStatus::DELETED)->where('id', $id)->first();
         if (!$user) {
-            return returnMessage(0, null, 'User not found!');
+            return returnMessage(0, 404, '', 'User not found!');
         }
-        $data = returnMessage(1, $user, 'Get user success!');
+        $data = returnMessage(1, 200, $user, 'Get user success!');
         return response($data, 200);
     }
 
@@ -186,33 +186,33 @@ class AdminUserApi extends Controller
 
             $is_valid = User::checkEmail($email);
             if (!$is_valid) {
-                $data = returnMessage(-1, 'Error', 'Email has been used!');
+                $data = returnMessage(-1, 400, 'Error', 'Email has been used!');
                 return response($data, 400);
             }
 
             $is_valid = User::checkPhone($phone);
             if (!$is_valid) {
-                $data = returnMessage(-1, 'Error', 'Phone has been used!');
+                $data = returnMessage(-1, 400, 'Error', 'Phone has been used!');
                 return response($data, 400);
             }
 
             if ($password != $password_confirm) {
-                $data = returnMessage(-1, 'Error', 'Passwords do not match!');
+                $data = returnMessage(-1, 400, 'Error', 'Passwords do not match!');
                 return response($data, 400);
             }
 
             if (strlen($password) < 5) {
-                $data = returnMessage(-1, 'Error', 'Password must be at least 5 characters!');
+                $data = returnMessage(-1, 400, 'Error', 'Password must be at least 5 characters!');
                 return response($data, 400);
             }
 
             $user = $this->save($user, $request);
             $user->save();
 
-            $data = returnMessage(1, $user, 'Create success');
+            $data = returnMessage(1, 200, $user, 'Create success');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
@@ -262,7 +262,7 @@ class AdminUserApi extends Controller
         try {
             $user = User::where('users.status', '!=', UserStatus::DELETED)->where('id', $id)->first();
             if (!$user) {
-                return returnMessage(0, null, 'User not found!');
+                return returnMessage(-1, 400, null, 'User not found!');
             }
 
             $email = $request->input('email');
@@ -273,7 +273,7 @@ class AdminUserApi extends Controller
             if ($user->email != $email) {
                 $is_valid = User::checkEmail($email);
                 if (!$is_valid) {
-                    $data = returnMessage(-1, 'Error', 'Email has been used!');
+                    $data = returnMessage(-1, 400, 'Error', 'Email has been used!');
                     return response($data, 400);
                 }
             }
@@ -281,19 +281,19 @@ class AdminUserApi extends Controller
             if ($user->phone != $phone) {
                 $is_valid = User::checkPhone($phone);
                 if (!$is_valid) {
-                    $data = returnMessage(-1, 'Error', 'Phone has been used!');
+                    $data = returnMessage(-1, 400, 'Error', 'Phone has been used!');
                     return response($data, 400);
                 }
             }
 
             if ($password || $password_confirm) {
                 if ($password != $password_confirm) {
-                    $data = returnMessage(-1, 'Error', 'Passwords do not match!');
+                    $data = returnMessage(-1, 400, 'Error', 'Passwords do not match!');
                     return response($data, 400);
                 }
 
                 if (strlen($password) < 5) {
-                    $data = returnMessage(-1, 'Error', 'Password must be at least 5 characters!');
+                    $data = returnMessage(-1, 400, 'Error', 'Password must be at least 5 characters!');
                     return response($data, 400);
                 }
             }
@@ -301,10 +301,10 @@ class AdminUserApi extends Controller
             $user = $this->save($user, $request);
             $user->save();
 
-            $data = returnMessage(1, $user, 'Update success!');
+            $data = returnMessage(1, 200, $user, 'Update success!');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
@@ -346,16 +346,16 @@ class AdminUserApi extends Controller
         try {
             $user = User::where('users.status', '!=', UserStatus::DELETED)->where('id', $id)->first();
             if (!$user) {
-                return returnMessage(0, null, 'User not found!');
+                return returnMessage(-1, 404, null, 'User not found!');
             }
 
             $user->status = UserStatus::DELETED;
             $user->save();
 
-            $data = returnMessage(1, $user, 'Delete success!');
+            $data = returnMessage(1, 200, $user, 'Delete success!');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }

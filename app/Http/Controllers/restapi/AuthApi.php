@@ -74,19 +74,23 @@ class AuthApi extends Controller
 
             $user = User::where('email', $loginRequest)->orWhere('phone', $loginRequest)->first();
             if (!$user) {
-                return response($newController->returnMessage('User not found!'), 404);
+                $data = returnMessage(-1, 404, '', 'User not found!');
+                return response($data, 400);
             }
 
             if ($user->status == UserStatus::INACTIVE) {
-                return response($newController->returnMessage('User not active!'), 400);
+                $data = returnMessage(-1, 400, '', 'User not active!');
+                return response($data, 400);
             }
 
             if ($user->status == UserStatus::BLOCKED) {
-                return response($newController->returnMessage('User has been blocked!'), 400);
+                $data = returnMessage(-1, 400, '', 'User has been blocked!');
+                return response($data, 400);
             }
 
             if ($user->status == UserStatus::DELETED) {
-                return response($newController->returnMessage('User is deleted!'), 400);
+                $data = returnMessage(-1, 400, '', 'User is deleted!');
+                return response($data, 400);
             }
 
             if (Auth::attempt($credentials)) {
@@ -98,11 +102,14 @@ class AuthApi extends Controller
                 $role = Role::find($roleUser->role_id);
                 $response['role'] = $role->name;
                 $response['accessToken'] = $token;
-                return response()->json($response);
+                $data = returnMessage(1, 200, $response, 'Login success!');
+                return response($data, 200);
             }
-            return response()->json($newController->returnMessage('Login fail! Please check email or password'), 400);
+            $data = returnMessage(-1, 400, '', 'Login fail! Please check email or password');
+            return response($data, 400);
         } catch (\Exception $exception) {
-            return response($newController->returnMessage($exception->getMessage()), 400);
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
+            return response($data, 400);
         }
     }
 
@@ -154,25 +161,30 @@ class AuthApi extends Controller
 
             $isEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
             if (!$isEmail) {
-                return response($newController->returnMessage('Email invalid!'), 400);
+                $data = returnMessage(-1, 400, '', 'Email invalid!');
+                return response($data, 400);
             }
 
             $is_valid = User::checkEmail($email);
             if (!$is_valid) {
-                return response($newController->returnMessage('Email already exited!'), 400);
+                $data = returnMessage(-1, 400, '', 'Email already exited!');
+                return response($data, 400);
             }
 
             $is_valid = User::checkPhone($phone);
             if (!$is_valid) {
-                return response($newController->returnMessage('Phone already exited!'), 400);
+                $data = returnMessage(-1, 400, '', 'Phone already exited!');
+                return response($data, 400);
             }
 
             if ($password != $password_confirm) {
-                return response($newController->returnMessage('Password or Password Confirm incorrect!'), 400);
+                $data = returnMessage(-1, 400, '', 'Password or Password Confirm incorrect!');
+                return response($data, 400);
             }
 
             if (strlen($password) < 5) {
-                return response($newController->returnMessage('Password invalid!'), 400);
+                $data = returnMessage(-1, 400, '', 'Password invalid!');
+                return response($data, 400);
             }
 
             $passwordHash = Hash::make($password);
@@ -194,11 +206,14 @@ class AuthApi extends Controller
             $newController->saveRoleUser($user->id);
 
             if ($success) {
-                return response($newController->returnMessage('Register success!'), 200);
+                $data = returnMessage(1, 200, $user, 'Register success!');
+                return response($data, 200);
             }
-            return response($newController->returnMessage('Register failed!'), 400);
+            $data = returnMessage(-1, 400, '', 'Register failed!');
+            return response($data, 400);
         } catch (\Exception $exception) {
-            return response($newController->returnMessage($exception->getMessage()), 400);
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
+            return response($data, 400);
         }
     }
 
