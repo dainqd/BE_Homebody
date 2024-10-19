@@ -15,18 +15,21 @@ class AuthenticatePermission
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (TokenInvalidException $e) {
-            return response(['status' => 'Token is Invalid'], 400);
+            $data = returnMessage(1, 400, '', 'Token is Invalid!');
+            return response($data, 400);
         } catch (TokenExpiredException $e) {
-            return response(['status' => 'Token is Expired'], 444);
+            $data = returnMessage(1, 444, '', 'Token is Expired');
+            return response($data, 444);
         } catch (Exception $e) {
-            return response(['status' => 'Authorization Token not found'], 401);
+            $data = returnMessage(1, 401, '', 'Authorization Token not found');
+            return response($data, 401);
         }
         return $next($request);
     }

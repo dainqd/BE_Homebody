@@ -148,10 +148,10 @@ class MainController extends Controller
     public function test()
     {
         try {
-            $data = returnMessage(1, '', 'Success');
+            $data = returnMessage(1, 200, '', 'Success');
             return response($data, 200);
         } catch (\Exception $exception) {
-            $data = returnMessage(-1, '', $exception->getMessage());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
