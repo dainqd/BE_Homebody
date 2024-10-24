@@ -8,9 +8,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminUserApi extends Controller
 {
+    protected $user;
+
+    /**
+     * Instantiate a new CheckoutController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate()->toArray();
+    }
+
     /**
      * @OA\Get(
      *     path="/api/admin/users/list",

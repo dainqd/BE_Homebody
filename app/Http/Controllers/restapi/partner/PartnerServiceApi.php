@@ -6,9 +6,22 @@ use App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Services;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PartnerServiceApi extends Api
 {
+    protected $user;
+
+    /**
+     * Instantiate a new CheckoutController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate()->toArray();
+    }
+
     public function list(Request $request)
     {
         try {
