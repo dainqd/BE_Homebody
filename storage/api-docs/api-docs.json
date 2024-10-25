@@ -175,6 +175,57 @@
                 }
             }
         },
+        "/api/categories/list": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get list of categories",
+                "description": "Get list of categories",
+                "operationId": "26b0ff6a11a2fdd2d4fb1d27b1ff7e3b",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    }
+                }
+            }
+        },
+        "/api/categories/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get detail of a category",
+                "description": "Get detail of a category",
+                "operationId": "940b02d4b56c54ed345563410c211182",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            }
+        },
         "/api/partner/register": {
             "post": {
                 "tags": [
@@ -943,6 +994,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Category",
+            "description": "Category"
         },
         {
             "name": "Partner",

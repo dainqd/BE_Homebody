@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\restapi\AuthApi;
+use App\Http\Controllers\restapi\CategoryApi;
 use App\Http\Controllers\restapi\PartnerRegisterApi;
 
 Route::group(['prefix' => 'auth'], function () {
@@ -22,4 +23,8 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'partner'], function () {
     Route::post('register', [PartnerRegisterApi::class, 'create'])->name('restapi.partner.register');
+});
+Route::group(['prefix' => 'categories'], function () {
+    Route::get('list', [CategoryApi::class, 'list'])->name('restapi.categories.list');
+    Route::get('detail/{id}', [CategoryApi::class, 'detail'])->name('restapi.categories.detail');
 });
