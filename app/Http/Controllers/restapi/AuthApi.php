@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\restapi;
 
 use App\Enums\UserStatus;
+use App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MainController;
 use App\Models\Role;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthApi extends Controller
+class AuthApi extends Api
 {
 
     /**

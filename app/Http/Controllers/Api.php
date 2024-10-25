@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use OpenApi\Annotations as OA;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * @OA\Info(title="HomeBody Glam API", version="3.0")

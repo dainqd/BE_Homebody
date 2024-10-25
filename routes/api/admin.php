@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\restapi\admin\AdminCategoryApi;
 use App\Http\Controllers\restapi\admin\AdminPartnerRegisterApi;
 use App\Http\Controllers\restapi\admin\AdminUserApi;
 
@@ -24,6 +25,14 @@ Route::group(['prefix' => 'partner-register'], function () {
     Route::get('/detail/{id}', [AdminPartnerRegisterApi::class, 'detail'])->name('api.admin.partner.register.detail');
     Route::post('/update/{id}', [AdminPartnerRegisterApi::class, 'update'])->name('api.admin.partner.register.update');
     Route::delete('/delete/{id}', [AdminPartnerRegisterApi::class, 'delete'])->name('api.admin.partner.register.delete');
+});
+
+Route::group(['prefix' => 'categories'], function () {
+    Route::get('/list', [AdminCategoryApi::class, 'list'])->name('api.admin.categories.list');
+    Route::get('/detail/{id}', [AdminCategoryApi::class, 'detail'])->name('api.admin.categories.detail');
+    Route::post('/create', [AdminCategoryApi::class, 'create'])->name('api.admin.categories.create');
+    Route::post('/update/{id}', [AdminCategoryApi::class, 'update'])->name('api.admin.categories.update');
+    Route::delete('/delete/{id}', [AdminCategoryApi::class, 'delete'])->name('api.admin.categories.delete');
 });
 
 Route::group(['prefix' => 'users'], function () {

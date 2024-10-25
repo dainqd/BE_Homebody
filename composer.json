@@ -38,7 +38,11 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/helper.php"
+            "app/Helpers/helper.php",
+            "app/Helpers/convert_currency.php",
+            "app/Helpers/language_helper.php",
+            "app/Helpers/locale_helper.php",
+            "app/Helpers/location_helper.php"
         ]
     },
     "autoload-dev": {

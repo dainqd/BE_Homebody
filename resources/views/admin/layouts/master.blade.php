@@ -111,7 +111,6 @@
 
 <!-- Template Main JS File -->
 <script src="{{ asset('admin/js/main.js') }}"></script>
-<script src="{{ asset('admin/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 <style>
     .tox.tox-tinymce {
         z-index: 0;

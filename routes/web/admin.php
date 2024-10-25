@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\admin\AdminCategoryController;
 use App\Http\Controllers\admin\AdminHomeController;
 use App\Http\Controllers\admin\AdminPartnerRegisterController;
 use App\Http\Controllers\admin\AdminUserController;
@@ -20,6 +21,12 @@ Route::get('/dashboard', [AdminHomeController::class, 'dashboard'])->name('admin
 Route::group(['prefix' => 'partner-register'], function () {
     Route::get('/list', [AdminPartnerRegisterController::class, 'list'])->name('admin.partner.register.list');
     Route::get('/detail/{id}', [AdminPartnerRegisterController::class, 'detail'])->name('admin.partner.register.detail');
+});
+
+Route::group(['prefix' => 'categories'], function () {
+    Route::get('/list', [AdminCategoryController::class, 'list'])->name('admin.categories.list');
+    Route::get('/detail/{id}', [AdminCategoryController::class, 'detail'])->name('admin.categories.detail');
+    Route::get('/create', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
 });
 
 Route::group(['prefix' => 'users'], function () {
