@@ -173,8 +173,8 @@ class AdminCategoryApi extends Controller
 
             $category->name = $name;
 
-            $category->name_cn = language_helper($name, 'en');
-            $category->name_en = language_helper($name, 'zh-CN');
+            $category->name_en = language_helper($name, 'en');
+            $category->name_cn = language_helper($name, 'zh-CN');
             $category->name_vi = language_helper($name, 'vi');
 
             $parent_id = $request->input('parent_id');
@@ -292,8 +292,8 @@ class AdminCategoryApi extends Controller
 
                 $category->name = $name;
 
-                $category->name_cn = language_helper($name, 'en');
-                $category->name_en = language_helper($name, 'zh-CN');
+                $category->name_en = language_helper($name, 'en');
+                $category->name_cn = language_helper($name, 'zh-CN');
                 $category->name_vi = language_helper($name, 'vi');
             }
 
