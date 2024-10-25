@@ -67,7 +67,7 @@
 
             $('#btnUpdate').prop('disabled', true).text('Saving...');
 
-            let inputs = $('#formUpdate input, #formUpdate textarea, #formUpdate select');
+            let inputs = $('#formUpdate input, #formUpdate textarea');
             for (let i = 0; i < inputs.length; i++) {
                 if (!$(inputs[i]).val() && $(inputs[i]).attr('type') !== 'file' && $(inputs[i]).attr('type') !== 'hidden') {
                     let text = $(inputs[i]).prev().text();
