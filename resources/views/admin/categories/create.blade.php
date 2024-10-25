@@ -60,7 +60,7 @@
 
             $('#btnCreate').prop('disabled', true).text('Creating...');
 
-            let inputs = $('#formCreate input, #formCreate textarea, #formCreate select');
+            let inputs = $('#formCreate input, #formCreate textarea');
             for (let i = 0; i < inputs.length; i++) {
                 if (!$(inputs[i]).val()) {
                     let text = $(inputs[i]).prev().text();
