@@ -42,7 +42,8 @@
             "app/Helpers/convert_currency.php",
             "app/Helpers/language_helper.php",
             "app/Helpers/locale_helper.php",
-            "app/Helpers/location_helper.php"
+            "app/Helpers/location_helper.php",
+            "app/Helpers/get_role_user.php"
         ]
     },
     "autoload-dev": {

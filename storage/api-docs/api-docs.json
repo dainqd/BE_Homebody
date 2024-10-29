@@ -978,6 +978,311 @@
                     }
                 }
             }
+        },
+        "/api/partner/services/list": {
+            "get": {
+                "tags": [
+                    "Partner Service"
+                ],
+                "summary": "List all services",
+                "description": "List all services",
+                "operationId": "c1a092ac36daa06ab2f4978337075a96",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            }
+        },
+        "/api/partner/services/create": {
+            "post": {
+                "tags": [
+                    "Partner Service"
+                ],
+                "summary": "Create a new service",
+                "description": "Create a new service",
+                "operationId": "dc92dd734c621d8f4ab2b52bbee10feb",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the service",
+                                        "type": "string",
+                                        "example": "Service name"
+                                    },
+                                    "description": {
+                                        "description": "Description of the service",
+                                        "type": "string",
+                                        "example": "Service description"
+                                    },
+                                    "price": {
+                                        "description": "Price of the service",
+                                        "type": "integer",
+                                        "example": 10000
+                                    },
+                                    "discount_price": {
+                                        "description": "Discount price of the service",
+                                        "type": "integer",
+                                        "example": 8000
+                                    },
+                                    "time_execution": {
+                                        "description": "Time execution of the service",
+                                        "type": "integer",
+                                        "example": 60
+                                    },
+                                    "display_priority": {
+                                        "description": "Display priority of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usage_conditions": {
+                                        "description": "Usage conditions of the service",
+                                        "type": "string",
+                                        "example": "Service usage conditions"
+                                    },
+                                    "number_of_sessions": {
+                                        "description": "Number of sessions of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "promotion_start": {
+                                        "description": "Promotion start time of the service",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2022-01-01 00:00:00"
+                                    },
+                                    "promotion_end": {
+                                        "description": "Promotion end time of the service",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2022-01-31 23:59:59"
+                                    },
+                                    "category_id": {
+                                        "description": "Category ID of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "thumbnail": {
+                                        "description": "Thumbnail of the service",
+                                        "type": "file",
+                                        "example": "https://example.com/thumbnail.jpg"
+                                    },
+                                    "gallery": {
+                                        "description": "Gallery of the service",
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Gallery of the service",
+                                            "type": "file",
+                                            "example": "https://example.com/gallery1.jpg"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            }
+        },
+        "/api/partner/services/update/{id}": {
+            "put": {
+                "tags": [
+                    "Partner Service"
+                ],
+                "summary": "Update a service by ID",
+                "description": "Update a service by ID",
+                "operationId": "258692265f3e34113541cd44641c78d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Service ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the service",
+                                        "type": "string",
+                                        "example": "Service name"
+                                    },
+                                    "description": {
+                                        "description": "Description of the service",
+                                        "type": "string",
+                                        "example": "Service description"
+                                    },
+                                    "price": {
+                                        "description": "Price of the service",
+                                        "type": "integer",
+                                        "example": 10000
+                                    },
+                                    "discount_price": {
+                                        "description": "Discount price of the service",
+                                        "type": "integer",
+                                        "example": 8000
+                                    },
+                                    "time_execution": {
+                                        "description": "Time execution of the service",
+                                        "type": "integer",
+                                        "example": 60
+                                    },
+                                    "display_priority": {
+                                        "description": "Display priority of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "usage_conditions": {
+                                        "description": "Usage conditions of the service",
+                                        "type": "string",
+                                        "example": "Service usage conditions"
+                                    },
+                                    "number_of_sessions": {
+                                        "description": "Number of sessions of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "promotion_start": {
+                                        "description": "Promotion start time of the service",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2022-01-01 00:00:00"
+                                    },
+                                    "promotion_end": {
+                                        "description": "Promotion end time of the service",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2022-01-31 23:59:59"
+                                    },
+                                    "category_id": {
+                                        "description": "Category ID of the service",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "thumbnail": {
+                                        "description": "Thumbnail of the service",
+                                        "type": "file",
+                                        "example": "https://example.com/thumbnail.jpg"
+                                    },
+                                    "gallery": {
+                                        "description": "Gallery of the service",
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Gallery of the service",
+                                            "type": "file",
+                                            "example": "https://example.com/gallery1.jpg"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            }
+        },
+        "/api/partner/services/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Partner Service"
+                ],
+                "summary": "Delete a service by ID",
+                "description": "Delete a service by ID",
+                "operationId": "e878ebe4c5b524312d0b9786a073c480",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Service ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            }
+        },
+        "/api/partner/services/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Partner Service"
+                ],
+                "summary": "Get detail of a service",
+                "description": "Get detail of a service",
+                "operationId": "a590a27cd1525ba5f72e28559be6ac2e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Service ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized user"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1014,6 +1319,10 @@
         {
             "name": "Admin User",
             "description": "Admin User"
+        },
+        {
+            "name": "Partner Service",
+            "description": "Partner Service"
         }
     ]
 }
