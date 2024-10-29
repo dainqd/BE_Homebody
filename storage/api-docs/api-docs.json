@@ -280,6 +280,141 @@
                 }
             }
         },
+        "/api/search/user": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search user by keyword, price range, and location",
+                "operationId": "33a755c4579789e3ad52da16c79cec1d",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "Keyword to search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "minPrice",
+                        "in": "query",
+                        "description": "Minimum price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "maxPrice",
+                        "in": "query",
+                        "description": "Maximum price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "province_id",
+                        "in": "query",
+                        "description": "Province ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "district_id",
+                        "in": "query",
+                        "description": "District ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "commune_id",
+                        "in": "query",
+                        "description": "Commune ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/services/list": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "List all services",
+                "description": "List all services",
+                "operationId": "2a2d7d6c2f0a09c4eaae9b4d1b0bd9cd",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/services/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Get detail of a service",
+                "description": "Get detail of a service",
+                "operationId": "db44b8d3636641a3dc114e4559aeaa21",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Service ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
         "/api/admin/categories/list": {
             "get": {
                 "tags": [
@@ -979,6 +1114,128 @@
                 }
             }
         },
+        "/api/partner/update/info": {
+            "post": {
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Save partner information",
+                "description": "Save partner information",
+                "operationId": "6d3b694df041390c8a34b4fc65fa15e1",
+                "requestBody": {
+                    "description": "Partner information",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Male"
+                                    },
+                                    "thumbnail": {
+                                        "description": "Thumbnail image file",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "gallery": {
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Gallery image file",
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "123 Main St"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "example": "37.7749"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "example": "-122.4194"
+                                    },
+                                    "about": {
+                                        "type": "string",
+                                        "example": "About me"
+                                    },
+                                    "experience": {
+                                        "type": "string",
+                                        "example": "Experience"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "APPROVED"
+                                    },
+                                    "province_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "district_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "commune_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tax_code": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "passport": {
+                                        "description": "Passport image file",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "time_working": {
+                                        "type": "string",
+                                        "example": "8h-12h"
+                                    },
+                                    "day_working": {
+                                        "type": "string",
+                                        "example": "Monday"
+                                    },
+                                    "specialty": {
+                                        "type": "string",
+                                        "example": "Dentist"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Save information successfully!"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/partner/services/list": {
             "get": {
                 "tags": [
@@ -1307,6 +1564,14 @@
         {
             "name": "Partner",
             "description": "Partner"
+        },
+        {
+            "name": "Search",
+            "description": "Search"
+        },
+        {
+            "name": "Service",
+            "description": "Service"
         },
         {
             "name": "Admin Category",
