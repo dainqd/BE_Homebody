@@ -14,6 +14,8 @@
 use App\Http\Controllers\restapi\AuthApi;
 use App\Http\Controllers\restapi\CategoryApi;
 use App\Http\Controllers\restapi\PartnerRegisterApi;
+use App\Http\Controllers\restapi\SearchApi;
+use App\Http\Controllers\restapi\ServiceApi;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [AuthApi::class, 'login'])->name('restapi.auth.login');
@@ -24,7 +26,17 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'partner'], function () {
     Route::post('register', [PartnerRegisterApi::class, 'create'])->name('restapi.partner.register');
 });
+
 Route::group(['prefix' => 'categories'], function () {
     Route::get('list', [CategoryApi::class, 'list'])->name('restapi.categories.list');
     Route::get('detail/{id}', [CategoryApi::class, 'detail'])->name('restapi.categories.detail');
+});
+
+Route::group(['prefix' => 'services'], function () {
+    Route::get('list', [ServiceApi::class, 'list'])->name('restapi.services.list');
+    Route::get('detail/{id}', [ServiceApi::class, 'detail'])->name('restapi.services.detail');
+});
+
+Route::group(['prefix' => 'search'], function () {
+    Route::get('user', [SearchApi::class, 'searchUser'])->name('restapi.search.users.list');
 });

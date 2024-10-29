@@ -25,7 +25,7 @@ class CheckPartnerPermission
             $user = JWTAuth::parseToken()->authenticate();
             $role_user = RoleUser::where('user_id', $user->id)->first();
             $roleNames = Role::where('id', $role_user->role_id)->pluck('name');
-            if ($roleNames->contains(RoleName::PARTNER)) {
+            if ($roleNames->contains(RoleName::PARTNER) || $roleNames->contains(RoleName::ADMIN)) {
                 return $next($request);
             }
         } catch (TokenInvalidException $e) {

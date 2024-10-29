@@ -5,6 +5,7 @@ namespace App\Http\Controllers\restapi\partner;
 use App\Enums\ServiceStatus;
 use App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\PartnerInformations;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -179,6 +180,14 @@ class PartnerServiceApi extends Api
     {
         try {
             $service = new Services();
+
+            $user_id = $this->user['id'];
+
+            $info = PartnerInformations::where('user_id', $user_id)->first();
+            if (!$info) {
+                $data = returnMessage(-1, 400, null, 'Please update your information first');
+                return response($data, 400);
+            }
 
             $service = $this->save($request, $service);
 

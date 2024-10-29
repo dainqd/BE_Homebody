@@ -23,6 +23,57 @@ class PartnerInfoApi extends Api
         $this->user = JWTAuth::parseToken()->authenticate()->toArray();
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/partner/update/info",
+     *     summary="Save partner information",
+     *     description="Save partner information",
+     *     tags={"Partner"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Partner information",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="phone", type="string", example="1234567890"),
+     *                 @OA\Property(property="email", type="string", example="john@example.com"),
+     *                 @OA\Property(property="gender", type="string", example="Male"),
+     *                 @OA\Property(property="thumbnail", type="string", format="binary", description="Thumbnail image file"),
+     *                 @OA\Property(
+     *                     property="gallery",
+     *                     type="array",
+     *                     @OA\Items(type="string", format="binary", description="Gallery image file")
+     *                 ),
+     *                 @OA\Property(property="address", type="string", example="123 Main St"),
+     *                 @OA\Property(property="longitude", type="string", example="37.7749"),
+     *                 @OA\Property(property="latitude", type="string", example="-122.4194"),
+     *                 @OA\Property(property="about", type="string", example="About me"),
+     *                 @OA\Property(property="experience", type="string", example="Experience"),
+     *                 @OA\Property(property="status", type="string", example="APPROVED"),
+     *                 @OA\Property(property="province_id", type="integer", example=1),
+     *                 @OA\Property(property="district_id", type="integer", example=1),
+     *                 @OA\Property(property="commune_id", type="integer", example=1),
+     *                 @OA\Property(property="tax_code", type="string", example="1234567890"),
+     *                 @OA\Property(property="passport", type="string", format="binary", description="Passport image file"),
+     *                 @OA\Property(property="time_working", type="string", example="8h-12h"),
+     *                 @OA\Property(property="day_working", type="string", example="Monday"),
+     *                 @OA\Property(property="specialty", type="string", example="Dentist")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Save information successfully!"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+     */
     public function saveInfo(Request $request)
     {
         try {
@@ -44,7 +95,7 @@ class PartnerInfoApi extends Api
 
             $about = $request->input('about');
             $experience = $request->input('experience');
-            $status = $request->input('status');
+            $status = PartnerInformationStatus::ACTIVE;
 
             $address = $request->input('address');
 
@@ -90,7 +141,9 @@ class PartnerInfoApi extends Api
             $partner_->specialty_cn = language_helper($specialty, 'zh-CN');
             $partner_->specialty_vi = language_helper($specialty, 'vi');
 
-            $data = returnMessage(1, 200, '', 'Save information successfully!');
+            $partner_->save();
+
+            $data = returnMessage(1, 200, $partner_, 'Save information successfully!');
             return response($data, 200);
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());
