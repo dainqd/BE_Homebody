@@ -185,6 +185,8 @@ class SearchApi extends Api
 
             $rs = [
                 'total' => $total,
+                'size' => $size,
+                'page' => $page,
                 'data' => $results
             ];
 
