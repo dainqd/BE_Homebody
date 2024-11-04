@@ -158,6 +158,8 @@ class SearchApi extends Api
                 }
             }
 
+            $total = $data->distinct()->count();
+
             if ($sort) {
                 $data->orderBy('services.discount_price', $sort);
             }
@@ -165,8 +167,6 @@ class SearchApi extends Api
             if ($page) {
                 $data->skip(($page - 1) * $size)->take($size);
             }
-
-            $total = $data->distinct()->count();
 
             $results = $data->distinct()
                 ->select('users.*')
@@ -185,6 +185,8 @@ class SearchApi extends Api
 
             $rs = [
                 'total' => $total,
+                'size' => $size,
+                'page' => $page,
                 'data' => $results
             ];
 
