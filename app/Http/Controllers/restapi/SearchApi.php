@@ -119,9 +119,9 @@ class SearchApi extends Api
             $province_id = $request->input('province_id');
             $district_id = $request->input('district_id');
             $commune_id = $request->input('commune_id');
-            $size = $request->input('size');
-            $sort = $request->input('sort');
-            $page = $request->input('page');
+            $size = $request->input('size', 15);
+            $sort = $request->input('sort', 'asc');
+            $page = $request->input('page', 1);
 
             $data = User::where('users.status', UserStatus::ACTIVE)
                 ->leftJoin('partner_informations', 'users.id', '=', 'partner_informations.user_id')
@@ -158,24 +158,22 @@ class SearchApi extends Api
                 }
             }
 
+            $total = $data->distinct()->count('users.id');
+
             if ($sort) {
                 $data->orderBy('services.discount_price', $sort);
             }
 
-            if ($page) {
-                $data->skip(($page - 1) * $size)->take($size);
-            }
-
-            $total = $data->distinct()->count();
+            $data->skip(($page - 1) * $size)->take($size);
 
             $results = $data->distinct()
                 ->select('users.*')
-                ->cursor()
+                ->get()
                 ->map(function ($item) {
                     $result = $item->toArray();
 
                     $partnerInformation = PartnerInformations::where('user_id', $item->id)->first();
-                    $result['partner_information'] = $partnerInformation?->toArray();
+                    $result['partner_information'] = $partnerInformation ? $partnerInformation->toArray() : null;
 
                     $services = Services::where('user_id', $item->id)->get();
                     $result['services'] = $services->toArray();
@@ -190,9 +188,11 @@ class SearchApi extends Api
                 'data' => $results
             ];
 
+
             $data = returnMessage(1, 200, $rs, 'Success');
             return response($data, 200);
         } catch (\Exception $exception) {
+            \Log::error('Error in data retrieval: ' . $exception->getMessage());
             $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
