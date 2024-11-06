@@ -188,6 +188,7 @@ class SearchApi extends Api
                 'data' => $results
             ];
 
+
             $data = returnMessage(1, 200, $rs, 'Success');
             return response($data, 200);
         } catch (\Exception $exception) {
