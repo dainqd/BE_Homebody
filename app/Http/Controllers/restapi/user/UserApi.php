@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\restapi;
+namespace App\Http\Controllers\restapi\user;
 
 use App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,9 +13,21 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserApi extends Api
 {
+    protected $user;
+
+    /**
+     * Instantiate a new CheckoutController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate()->toArray();
+    }
+
     /**
      * @OA\Get(
-     *     path="/api/auth/users/get-info",
+     *     path="/api/users/get-info",
      *     summary="Get user information from token",
      *     description="Get user information from token",
      *     tags={"Users Api"},
@@ -33,8 +44,7 @@ class UserApi extends Api
     public function getUserFromToken()
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $data = $user->toArray();
+            $data = $this->user->toArray();
 
             $res = returnMessage(1, 200, $data, 'Success!');
 
@@ -52,8 +62,8 @@ class UserApi extends Api
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/auth/users/update-info",
+     * @OA\Post(
+     *     path="/api/users/update-info",
      *     summary="Update user information",
      *     description="Update user information",
      *     tags={"Users Api"},
@@ -87,8 +97,7 @@ class UserApi extends Api
     public function updateInfo(Request $request)
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $user = $user->toArray();
+            $user = $this->user->toArray();
 
             $full_name = $request->input('full_name');
             $email = $request->input('email');
@@ -147,7 +156,7 @@ class UserApi extends Api
 
     /**
      * @OA\Post(
-     *     path="/user/change_password",
+     *     path="/api/users/change_password",
      *     tags={"User"},
      *     summary="Change password",
      *     description="Change password",
@@ -177,8 +186,7 @@ class UserApi extends Api
             $password_confirm = $request->input('newpassword');
             $new_password_confirm = $request->input('renewpassword');
 
-            $user = JWTAuth::parseToken()->authenticate();
-            $user = $user->toArray();
+            $user = $this->user->toArray();
 
             $user = User::find($user['id']);
 
