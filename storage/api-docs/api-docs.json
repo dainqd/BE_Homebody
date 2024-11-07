@@ -312,6 +312,113 @@
                 }
             }
         },
+        "/api/currencies/convert": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "Convert currency",
+                "description": "Convert an amount from one currency to another.",
+                "operationId": "5a7bb961a19271a357af1927e1b67c0f",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Currency code to convert from",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "USD"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Currency code to convert to",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "VND"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Amount to convert",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful conversion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "from": {
+                                            "type": "string",
+                                            "example": "USD"
+                                        },
+                                        "to": {
+                                            "type": "string",
+                                            "example": "VND"
+                                        },
+                                        "amount": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "converted_amount": {
+                                            "type": "number",
+                                            "example": 23000
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, check parameters"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/locations/get-by-name": {
+            "get": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Get Long and Lat from Address",
+                "description": "Get Long and Lat from Address",
+                "operationId": "f866a987993667d7d719164e58efbe3b",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "Address",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Internal Server error"
+                    }
+                }
+            }
+        },
         "/api/partner/register": {
             "post": {
                 "tags": [
@@ -2340,6 +2447,14 @@
         {
             "name": "Category",
             "description": "Category"
+        },
+        {
+            "name": "Currency",
+            "description": "Currency"
+        },
+        {
+            "name": "Location",
+            "description": "Location"
         },
         {
             "name": "Partner",
