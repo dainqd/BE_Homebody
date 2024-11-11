@@ -172,6 +172,7 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         SocialiteProviders\Manager\ServiceProvider::class,
+        \Jlorente\Laravel\CreditCards\CreditCardsServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -191,6 +192,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'CreditCardValidator' => \Jlorente\Laravel\CreditCards\Facades\CreditCardValidator::class,
     ])->toArray(),
 
 ];
