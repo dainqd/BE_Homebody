@@ -68,7 +68,6 @@ class AuthController extends Controller
             }
 
             if (Auth::attempt($credentials)) {
-                alert()->success('Login success!');
                 $token = JWTAuth::fromUser($user);
                 $user->save();
 
