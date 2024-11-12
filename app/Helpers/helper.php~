@@ -24,11 +24,11 @@ if (!function_exists('returnMessage')) {
         }
 
         return [
-            'lang' => $locale,
             'type' => $localizedType,
             'status' => $status,
             'message' => $message,
             'data' => $data,
+            'lang' => $locale,
         ];
     }
 }

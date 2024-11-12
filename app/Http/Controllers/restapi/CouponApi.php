@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\restapi;
 
 use App\Enums\CouponStatus;
+use App\Http\Controllers\Controller;
 use App\Models\Coupons;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
