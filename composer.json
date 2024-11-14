@@ -11,7 +11,9 @@
         "php": "^8.1",
         "bensampo/laravel-enum": "^6.7",
         "darkaonline/l5-swagger": "^8.6",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.9",
+        "jlorente/laravel-credit-cards": "^1.0",
+        "laravel/cashier": "^15.4",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "*",
@@ -19,7 +21,9 @@
         "patrickschur/language-detection": "^5.3",
         "realrashid/sweet-alert": "*",
         "socialiteproviders/manager": "^4.4",
+        "srmklive/paypal": "~3.0",
         "stichoza/google-translate-php": "^5.1",
+        "stripe/stripe-php": "^13.18",
         "tymon/jwt-auth": "*"
     },
     "require-dev": {
@@ -46,6 +50,12 @@
             "app/Helpers/get_role_user.php"
         ]
     },
+    "authors": [
+        {
+            "name": "Dev Full Stack",
+            "email": "bigcorn2003@gmail.com"
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"

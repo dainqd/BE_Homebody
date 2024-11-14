@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\restapi;
 
-use App\Enums\ServiceStatus;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Api;
 use App\Models\PartnerInformations;
@@ -114,14 +113,14 @@ class SearchApi extends Api
     {
         try {
             $keyword = $request->input('keyword');
-            $minPrice = $request->input('minPrice', 0);
-            $maxPrice = $request->input('maxPrice', 10000000);
+            $minPrice = $request->input('minPrice') ?? 0;
+            $maxPrice = $request->input('maxPrice') ?? 100000000;
             $province_id = $request->input('province_id');
             $district_id = $request->input('district_id');
             $commune_id = $request->input('commune_id');
-            $size = $request->input('size', 15);
-            $sort = $request->input('sort', 'asc');
-            $page = $request->input('page', 1);
+            $size = $request->input('size') ?? 10;
+            $sort = $request->input('sort') ?? 'asc';
+            $page = $request->input('page') ?? 1;
 
             $data = User::where('users.status', UserStatus::ACTIVE)
                 ->leftJoin('partner_informations', 'users.id', '=', 'partner_informations.user_id')
@@ -166,8 +165,12 @@ class SearchApi extends Api
 
             $data->skip(($page - 1) * $size)->take($size);
 
+//            \Log::info($data->toSql());
+
             $results = $data->distinct()
                 ->select('users.*')
+//                ->limit($size)
+//                ->offset(($page - 1) * $size)
                 ->get()
                 ->map(function ($item) {
                     $result = $item->toArray();
@@ -191,7 +194,7 @@ class SearchApi extends Api
             $data = returnMessage(1, 200, $rs, 'Success');
             return response($data, 200);
         } catch (\Exception $exception) {
-            \Log::error('Error in data retrieval: ' . $exception->getMessage());
+            \Log::error('Error in data retrieval: ' . $exception->getMessage() . ' at line ' . $exception->getLine());
             $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }

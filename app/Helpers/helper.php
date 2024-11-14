@@ -9,22 +9,26 @@ if (!function_exists('returnMessage')) {
      */
     function returnMessage(int $type, int $status, mixed $data, string $message): array
     {
-        if ($type === 1) {
-            $data = [
-                'type' => 'success',
-                'status' => $status ?? 200,
-                'message' => $message,
-                'data' => $data,
-            ];
+        $locale = app()->getLocale();
+        $typeText = $type === 1 ? 'success' : 'error';
+        $localizedType = $typeText;
+
+        if ($locale === 'vi') {
+            $localizedType = $typeText === 'success' ? 'Thành công' : 'Thất bại';
+            $message = language_helper($message, 'vi');
+        } elseif ($locale === 'cn') {
+            $localizedType = $typeText === 'success' ? '成功' : '失败';
+            $message = language_helper($message, 'zh-CN');
         } else {
-            $data = [
-                'type' => 'error',
-                'status' => $status,
-                'message' => $message,
-                'data' => $data,
-            ];
+            $message = language_helper($message, 'en');
         }
 
-        return $data;
+        return [
+            'lang' => $locale,
+            'type' => $localizedType,
+            'status' => $status,
+            'message' => $message,
+            'data' => $data,
+        ];
     }
 }

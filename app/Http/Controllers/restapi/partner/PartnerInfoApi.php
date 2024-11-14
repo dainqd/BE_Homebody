@@ -7,6 +7,7 @@ use App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\PartnerInformations;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PartnerInfoApi extends Api

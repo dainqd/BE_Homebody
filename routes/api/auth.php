@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\restapi\user\CartApi;
+use App\Http\Controllers\restapi\user\MyCouponApi;
+use App\Http\Controllers\restapi\user\UserApi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => ''], function () {
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/get-info', [UserApi::class, 'getUserFromToken'])->name('api.users.get.info');
+    Route::post('/update-info', [UserApi::class, 'updateInfo'])->name('api.users.update.info');
+    Route::post('/change-avatar', [UserApi::class, 'changeAvatar'])->name('api.users.change.avatar');
+    Route::post('/change_password', [UserApi::class, 'changePassword'])->name('api.users.change.password');
+});
 
+Route::group(['prefix' => 'carts'], function () {
+    Route::get('list', [CartApi::class, 'list'])->name('api.auth.carts.list');
+    Route::post('add', [CartApi::class, 'addToCart'])->name('api.auth.carts.add');
+    Route::post('change-quantity/{id}', [CartApi::class, 'changeQuantity'])->name('api.auth.carts.change');
+    Route::post('remove/{id}', [CartApi::class, 'removeCart'])->name('api.auth.carts.remove');
+    Route::post('clear', [CartApi::class, 'clearCart'])->name('api.auth.carts.clear');
+});
+
+Route::group(['prefix' => 'my-coupons'], function () {
+    Route::get('list', [MyCouponApi::class, 'list'])->name('api.auth.my.coupons.list');
+    Route::get('detail', [MyCouponApi::class, 'detail'])->name('api.auth.my.coupons.detail');
+    Route::get('search', [MyCouponApi::class, 'search'])->name('api.auth.my.coupons.search');
+    Route::post('save', [MyCouponApi::class, 'saveCoupon'])->name('api.auth.my.coupons.save');
+    Route::delete('delete', [MyCouponApi::class, 'delete'])->name('api.auth.my.coupons.delete');
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Currency;
+use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
@@ -18,7 +19,7 @@ if (!function_exists('convertCurrency')) {
             default:
                 $currentFrom = 'USD';
         }
-        $rate = subConvertCurrencyDB($currentFrom, $to, $amount);
+        $rate = convertCurrencyDB($currentFrom, $to, $amount);
         return intval($amount) * intval($rate);
     }
 
@@ -57,73 +58,45 @@ if (!function_exists('convertCurrency')) {
         return $cachedRate;
     }
 
-    function subConvertCurrencyDB($from, $to, $amount)
-    {
-        $item = Currency::where([
-            ['from', $from],
-            ['to', $to],
-        ])->first();
-
-        if ($item) {
-            $createTime = Carbon::parse($item->updated_at)->addDay();
-            $currentTime = Carbon::now();
-            if ($createTime < $currentTime) {
-                $rate = subGetExchangeRate($from, $to, $amount);
-                $item->updated_at = Carbon::now()->addHours(7);
-                $item->rate = $rate;
-                $item->save();
-            } else {
-                $rate = $item->rate;
-            }
-        } else {
-            $rate = subGetExchangeRate($from, $to, $amount);
-            $currency = new Currency();
-            $currency->from = $from;
-            $currency->to = $to;
-            $currency->rate = $rate;
-            $currency->save();
-        }
-        return $rate;
-    }
-
-
     function getExchangeRate($from, $to, $amount)
     {
+        $client = new Client();
 
-        $client = new \GuzzleHttp\Client();
-
-        $response = $client->request('GET', 'https://currency-conversion-and-exchange-rates.p.rapidapi.com/convert?from=' . $from . '&to=' . $to . '&amount=' . $amount, [
-            'headers' => [
-                'X-RapidAPI-Host' => 'currency-conversion-and-exchange-rates.p.rapidapi.com',
-                'X-RapidAPI-Key' => 'eb9ba2aa18msh85ccd247d114b7bp125ddfjsndcb93a58ed8f',
-            ],
-        ]);
-
-        $responseBody = $response->getBody()->getContents();
-        $data = json_decode($responseBody, true);
         $rate = null;
-        if ($data['success'] == true) {
-            $rate = $data['info']['rate'];
+
+        $apiKeys = [
+            'eb9ba2aa18msh85ccd247d114b7bp125ddfjsndcb93a58ed8f',
+            '317cde09cdmsh1e9ff616e329ff6p1b3edejsnacd94136c963',
+            'fd5b4a8a17mshf2a5dc6629e1906p1bcda4jsn0b81b87041d1',
+        ];
+
+        foreach ($apiKeys as $apiKey) {
+            try {
+                $response = $client->request('GET', 'https://currency-conversion-and-exchange-rates.p.rapidapi.com/convert', [
+                    'query' => [
+                        'from' => $from,
+                        'to' => $to,
+                        'amount' => $amount,
+                    ],
+                    'headers' => [
+                        'X-RapidAPI-Host' => 'currency-conversion-and-exchange-rates.p.rapidapi.com',
+                        'X-RapidAPI-Key' => $apiKey,
+                    ],
+                ]);
+
+                $responseBody = $response->getBody()->getContents();
+                $data = json_decode($responseBody, true);
+
+                if ($data['success'] === true) {
+                    $rate = $data['info']['rate'];
+                    break;
+                }
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+                continue;
+            }
         }
 
         return $rate;
-    }
-
-    function subGetExchangeRate($from, $to, $amount)
-    {
-        $client = new \GuzzleHttp\Client();
-        $amount = 1;
-        $url = 'https://currency-converter-by-api-ninjas.p.rapidapi.com/v1/convertcurrency?have=' . $from . '&want=' . $to . '&amount=' . $amount;
-        $response = $client->request('GET', $url, [
-            'headers' => [
-                'X-RapidAPI-Host' => 'currency-converter-by-api-ninjas.p.rapidapi.com',
-                'X-RapidAPI-Key' => '317cde09cdmsh1e9ff616e329ff6p1b3edejsnacd94136c963',
-            ],
-        ]);
-        $item = $response->getBody();
-        $jsonData = $item->getContents();
-        $data = json_decode($jsonData, true);
-        $new_amount = $data['new_amount'];
-        return $new_amount;
     }
 }

@@ -15,10 +15,6 @@ class AuthController extends Controller
 {
     public function processLogin()
     {
-        if (Auth::check()) {
-            return redirect(route('admin.home'));
-        }
-
         return view('auth.login');
     }
 
@@ -72,6 +68,7 @@ class AuthController extends Controller
             }
 
             if (Auth::attempt($credentials)) {
+                alert()->success('Login success!');
                 $token = JWTAuth::fromUser($user);
                 $user->save();
 

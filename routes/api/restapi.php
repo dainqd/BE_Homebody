@@ -13,6 +13,8 @@
 
 use App\Http\Controllers\restapi\AuthApi;
 use App\Http\Controllers\restapi\CategoryApi;
+use App\Http\Controllers\restapi\CurrencyApi;
+use App\Http\Controllers\restapi\LocationApi;
 use App\Http\Controllers\restapi\PartnerRegisterApi;
 use App\Http\Controllers\restapi\SearchApi;
 use App\Http\Controllers\restapi\ServiceApi;
@@ -40,3 +42,13 @@ Route::group(['prefix' => 'services'], function () {
 Route::group(['prefix' => 'search'], function () {
     Route::get('user', [SearchApi::class, 'searchUser'])->name('restapi.search.users.list');
 });
+
+Route::group(['prefix' => 'locations'], function () {
+    Route::get('get-location', [LocationApi::class, 'getLocation'])->name('restapi.locations.get');
+    Route::get('get-by-name', [LocationApi::class, 'getLongAndLatFromAddress'])->name('restapi.locations.get.by.name');
+});
+
+Route::group(['prefix' => 'currencies'], function () {
+    Route::get('convert', [CurrencyApi::class, 'convert'])->name('restapi.currencies.convert');
+});
+
