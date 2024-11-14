@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\restapi;
 
+use App\Enums\CategoryStatus;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Api;
+use App\Models\Categories;
 use App\Models\PartnerInformations;
 use App\Models\Services;
 use App\Models\User;
@@ -170,7 +172,7 @@ class SearchApi extends Api
 
             $data->skip(($page - 1) * $size)->take($size);
 
-//            \Log::info($data->toSql());
+            \Log::info($data->toSql());
 
             $results = $data->distinct()
                 ->select('users.*')
@@ -178,13 +180,18 @@ class SearchApi extends Api
 //                ->offset(($page - 1) * $size)
                 ->get()
                 ->map(function ($item) {
-                    $result = $item->toArray();
+//                    $result = $item->toArray();
 
                     $partnerInformation = PartnerInformations::where('user_id', $item->id)->first();
-                    $result['partner_information'] = $partnerInformation ? $partnerInformation->toArray() : null;
+                    $result['partner_information'] = $partnerInformation?->toArray();
 
-                    $services = Services::where('user_id', $item->id)->get();
-                    $result['services'] = $services->toArray();
+                    $categories = Categories::where('categories.status', CategoryStatus::ACTIVE)
+                        ->join('services', 'categories.id', '=', 'services.category_id')
+                        ->where('services.user_id', $item->id)
+                        ->select('categories.name as category_name')
+                        ->get();
+
+                    $result['categories'] = $categories->toArray();
 
                     return $result;
                 });
