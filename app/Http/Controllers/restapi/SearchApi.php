@@ -118,7 +118,7 @@ class SearchApi extends Api
             $province_id = $request->input('province_id');
             $district_id = $request->input('district_id');
             $commune_id = $request->input('commune_id');
-            $size = $request->input('size') ?? 15;
+            $size = $request->input('size') ?? 10;
             $sort = $request->input('sort') ?? 'asc';
             $page = $request->input('page') ?? 1;
 
