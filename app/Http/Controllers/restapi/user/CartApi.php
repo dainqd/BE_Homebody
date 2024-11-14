@@ -21,7 +21,7 @@ class CartApi extends Api
      */
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate()->toArray();
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
     /**
@@ -237,7 +237,7 @@ class CartApi extends Api
         try {
             $cart = Carts::find($id);
             $cart?->delete();
-            $data = returnMessage(1, 200, 'Remove success!', 'Remove success');
+            $data = returnMessage(1, 200, 'Remove cart success!', 'Remove cart success');
             return response($data, 200);
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());
@@ -263,7 +263,7 @@ class CartApi extends Api
             $user = $this->user->toArray();
 
             $carts = Carts::where('user_id', $user['id'])->delete();
-            $data = returnMessage(1, 200, 'Clear success!', 'Clear success');
+            $data = returnMessage(1, 200, 'Clear cart success!', 'Clear cart success');
             return response($data, 200);
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());

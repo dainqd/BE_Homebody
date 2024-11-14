@@ -113,8 +113,8 @@ class SearchApi extends Api
     {
         try {
             $keyword = $request->input('keyword');
-            $minPrice = $request->input('minPrice') ?? 0;
-            $maxPrice = $request->input('maxPrice') ?? 100000000;
+            $minPrice = $request->input('minPrice');
+            $maxPrice = $request->input('maxPrice');
             $province_id = $request->input('province_id');
             $district_id = $request->input('district_id');
             $commune_id = $request->input('commune_id');

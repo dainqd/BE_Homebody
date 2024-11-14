@@ -166,8 +166,7 @@ class UserApi extends Api
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="password", type="string", example="123456"),
-     *             @OA\Property(property="newpassword", type="string", example="123456"),
-     *             @OA\Property(property="renewpassword", type="string", example="123456")
+     *             @OA\Property(property="password_confirm", type="string", example="123456")
      *         )
      *     ),
      *     @OA\Response(
