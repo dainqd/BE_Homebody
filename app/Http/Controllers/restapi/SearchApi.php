@@ -113,6 +113,7 @@ class SearchApi extends Api
     {
         try {
             $keyword = $request->input('keyword');
+            $category = $request->input('category_id');
             $minPrice = $request->input('minPrice') ?? 0;
             $maxPrice = $request->input('maxPrice') ?? 100000000;
             $province_id = $request->input('province_id');
@@ -142,6 +143,10 @@ class SearchApi extends Api
                         ->orWhere('categories.name_en', 'like', "%$keyword%")
                         ->orWhere('categories.name_vi', 'like', "%$keyword%");
                 });
+            }
+
+            if ($category) {
+                $data->where('services.category_id', '=', $category);
             }
 
             $data->whereBetween('services.discount_price', [$minPrice, $maxPrice]);
