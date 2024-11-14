@@ -156,6 +156,63 @@ class UserApi extends Api
 
     /**
      * @OA\Post(
+     *     path="/api/users/change-avatar",
+     *     summary="Update avatar information",
+     *     description="Update avatar information",
+     *     tags={"Users"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Send user information",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="full_name", type="string", example="Nguyen Van A"),
+     *             @OA\Property(property="email", type="string", example="nguyenvana@gmail.com"),
+     *             @OA\Property(property="phone", type="string", example="0909090909"),
+     *             @OA\Property(property="address", type="string", example="Ha Noi"),
+     *             @OA\Property(property="about", type="string", example="abc"),
+     *             @OA\Property(property="avatar", type="string", format="binary", example="avatar.jpg")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized user"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid request"
+     *     )
+     * )
+     */
+    public function changeAvatar(Request $request)
+    {
+        try {
+            $user = $this->user->toArray();
+            $avt = $user['avatar'];
+
+            if ($request->hasFile('avatar')) {
+                $item = $request->file('avatar');
+                $itemPath = $item->store('avatars', 'public');
+                $avt = asset('storage/' . $itemPath);
+            }
+
+            $user = User::find($user['id']);
+            $user->avatar = $avt;
+            $user->save();
+
+            $data = returnMessage(1, 200, $user, 'Success');
+            return response($data, 200);
+        } catch (\Exception $exception) {
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
+            return response($data, 400);
+        }
+    }
+
+    /**
+     * @OA\Post(
      *     path="/api/users/change_password",
      *     tags={"Users"},
      *     summary="Change password",

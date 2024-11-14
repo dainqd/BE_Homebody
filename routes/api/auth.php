@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\restapi\user\CartApi;
 use App\Http\Controllers\restapi\user\MyCouponApi;
 use App\Http\Controllers\restapi\user\UserApi;
@@ -20,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'users'], function () {
     Route::get('/get-info', [UserApi::class, 'getUserFromToken'])->name('api.users.get.info');
     Route::post('/update-info', [UserApi::class, 'updateInfo'])->name('api.users.update.info');
+    Route::post('/change-avatar', [UserApi::class, 'changeAvatar'])->name('api.users.change.avatar');
     Route::post('/change_password', [UserApi::class, 'changePassword'])->name('api.users.change.password');
 });
 
