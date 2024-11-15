@@ -160,30 +160,32 @@ class UserApi extends Api
      *     summary="Update avatar information",
      *     description="Update avatar information",
      *     tags={"Users"},
+     *     summary="Change avatar",
+     *     description="Change avatar",
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Send user information",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="full_name", type="string", example="Nguyen Van A"),
-     *             @OA\Property(property="email", type="string", example="nguyenvana@gmail.com"),
-     *             @OA\Property(property="phone", type="string", example="0909090909"),
-     *             @OA\Property(property="address", type="string", example="Ha Noi"),
-     *             @OA\Property(property="about", type="string", example="abc"),
-     *             @OA\Property(property="avatar", type="string", format="binary", example="avatar.jpg")
+     *         description="User avatar upload",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"avatar"},
+     *                 @OA\Property(
+     *                     property="avatar",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="The avatar file to upload"
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="successful operation"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized user"
+     *         description="Success"
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="Invalid request"
+     *         description="Bad request"
      *     )
      * )
      */
@@ -191,6 +193,11 @@ class UserApi extends Api
     {
         try {
             $user = $this->user->toArray();
+
+            $request->validate([
+                'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
             $avt = $user['avatar'];
 
             if ($request->hasFile('avatar')) {
