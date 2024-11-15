@@ -41,6 +41,7 @@ Route::group(['prefix' => 'services'], function () {
 
 Route::group(['prefix' => 'search'], function () {
     Route::get('user', [SearchApi::class, 'searchUser'])->name('restapi.search.users.list');
+    Route::get('partner', [SearchApi::class, 'getPartner'])->name('restapi.search.partner.list');
 });
 
 Route::group(['prefix' => 'locations'], function () {

@@ -211,4 +211,54 @@ class SearchApi extends Api
             return response($data, 400);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/search/partner",
+     *     summary="Get partner by user id",
+     *     tags={"Search"},
+     *     @OA\Parameter(
+     *         description="User ID",
+     *         in="query",
+     *         name="user_id",
+     *         required=true,
+     *         example="1",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error"
+     *     )
+     * )
+     */
+    public function getPartner(Request $request)
+    {
+        try {
+            $user_id = $request->input('user_id');
+
+            $partnerInformation = PartnerInformations::where('user_id', $user_id)->first();
+            $result['partner_information'] = $partnerInformation?->toArray();
+
+            $categories = Categories::where('categories.status', CategoryStatus::ACTIVE)
+                ->join('services', 'categories.id', '=', 'services.category_id')
+                ->where('services.user_id', $user_id)
+                ->select('categories.name as category_name')
+                ->get();
+
+            $services = Services::where('user_id', $user_id)->orderByDesc('id')->get();
+
+            $result['categories'] = $categories->toArray();
+            $result['services'] = $services->toArray();
+
+            $data = returnMessage(1, 200, $result, 'Success');
+            return response($data, 200);
+        } catch (\Exception $exception) {
+            \Log::error('Error in data retrieval: ' . $exception->getMessage() . ' at line ' . $exception->getLine());
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
+            return response($data, 400);
+        }
+    }
 }
