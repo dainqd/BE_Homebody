@@ -121,9 +121,9 @@ class SearchApi extends Api
             $province_id = $request->input('province_id');
             $district_id = $request->input('district_id');
             $commune_id = $request->input('commune_id');
-            $size = $request->input('size') ?? 10;
+            $size = $request->input('size') ?? null;
             $sort = $request->input('sort') ?? 'asc';
-            $page = $request->input('page') ?? 1;
+            $page = $request->input('page') ?? null;
 
             $data = User::where('users.status', UserStatus::ACTIVE)
                 ->leftJoin('partner_informations', 'users.id', '=', 'partner_informations.user_id')
@@ -170,18 +170,16 @@ class SearchApi extends Api
                 $data->orderBy('services.discount_price', $sort);
             }
 
-            $data->skip(($page - 1) * $size)->take($size);
+            if ($page && $size) {
+                $data->skip(($page - 1) * $size)->take($size);
+            }
 
             \Log::info($data->toSql());
 
             $results = $data->distinct()
                 ->select('users.*')
-//                ->limit($size)
-//                ->offset(($page - 1) * $size)
                 ->get()
                 ->map(function ($item) {
-//                    $result = $item->toArray();
-
                     $partnerInformation = PartnerInformations::where('user_id', $item->id)->first();
                     $result['partner_information'] = $partnerInformation?->toArray();
 
