@@ -133,6 +133,7 @@ class BookingApi extends Controller
                     $price = (int)$quantity * $service->price;
                     $booking_service->price = $price;
 
+                    $booking->partner_id = $service->user_id;
                     $booking_service->save();
                 }
             }

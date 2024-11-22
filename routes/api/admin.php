@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\restapi\admin\AdminBookingApi;
 use App\Http\Controllers\restapi\admin\AdminCategoryApi;
 use App\Http\Controllers\restapi\admin\AdminCouponApi;
 use App\Http\Controllers\restapi\admin\AdminPartnerRegisterApi;
@@ -34,6 +34,13 @@ Route::group(['prefix' => 'categories'], function () {
     Route::post('/create', [AdminCategoryApi::class, 'create'])->name('api.admin.categories.create');
     Route::post('/update/{id}', [AdminCategoryApi::class, 'update'])->name('api.admin.categories.update');
     Route::delete('/delete/{id}', [AdminCategoryApi::class, 'delete'])->name('api.admin.categories.delete');
+});
+
+Route::group(['prefix' => 'bookings'], function () {
+    Route::get('/list', [AdminBookingApi::class, 'list'])->name('api.admin.bookings.list');
+    Route::get('/detail/{id}', [AdminBookingApi::class, 'detail'])->name('api.admin.bookings.detail');
+    Route::post('/update/{id}', [AdminBookingApi::class, 'update'])->name('api.admin.bookings.update');
+    Route::delete('/delete/{id}', [AdminBookingApi::class, 'delete'])->name('api.admin.bookings.delete');
 });
 
 Route::group(['prefix' => 'users'], function () {
