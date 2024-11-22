@@ -101,41 +101,7 @@ class BookingApi extends Controller
             $userID = $this->user['id'];
             $booking = new Booking();
 
-            $time_slot = $request->input('time_slot');
-            $check_in = $request->input('check_in');
-            $check_out = $request->input('check_out');
-            $notes = $request->input('notes');
-
-            $status = BookingStatus::PROCESSING;
-
-            $service_array_ = $request->input('service_array_');
-            $quantity_array_ = $request->input('quantity_array_');
-
-            $booking->status = $status;
-            $booking->user_id = $userID;
-            $booking->time_slot = $time_slot;
-            $booking->check_in = $check_in;
-            $booking->check_out = $check_out;
-            $booking->notes = $notes;
-            $booking->save();
-
-            foreach ($service_array_ as $key => $value) {
-                $service_id = $value;
-                $service = Services::where('status', ServiceStatus::ACTIVE)
-                    ->where('id', $service_id)
-                    ->first();
-                $quantity = $quantity_array_[$key];
-                if ($service) {
-                    $booking_service = new BookingServices();
-                    $booking_service->service_id = $service_id;
-                    $booking_service->booking_id = $booking->id;
-                    $booking_service->quantity = $quantity;
-                    $price = (int)$quantity * $service->price;
-                    $booking_service->price = $price;
-
-                    $booking_service->save();
-                }
-            }
+            
 
             $data = returnMessage(1, 200, '', 'Create booking success!');
             return response($data, 200);
@@ -164,6 +130,8 @@ class BookingApi extends Controller
             $check_out = $request->input('check_out');
             $notes = $request->input('notes');
 
+            $status = BookingStatus::PROCESSING;
+
             $service_array_ = $request->input('service_array_');
             $quantity_array_ = $request->input('quantity_array_');
 
@@ -171,6 +139,7 @@ class BookingApi extends Controller
             $booking->check_in = $check_in;
             $booking->check_out = $check_out;
             $booking->notes = $notes;
+            $booking->status = $status;
 
             $booking->save();
 

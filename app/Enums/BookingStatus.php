@@ -10,5 +10,6 @@ final class BookingStatus extends Enum
     const PROCESSING = 'PROCESSING';
     const COMPLETED = 'COMPLETED';
     const REJECTED = 'REJECTED';
+    const CANCELED = 'CANCELED';
     const DELETED = 'DELETED';
 }
