@@ -166,13 +166,13 @@ class SearchApi extends Api
 
             $total = $data->distinct()->count('users.id');
 
-            if ($sort == 'desc') {
-                $sort = 'desc';
-            } else {
-                $sort = 'asc';
-            }
-
-            $data->orderBy('users.id', $sort);
+//            if ($sort == 'desc') {
+//                $sort = 'desc';
+//            } else {
+//                $sort = 'asc';
+//            }
+//
+//            $data->orderBy('users.id', $sort);
 
             if ($page && $size) {
                 $data->skip(($page - 1) * $size)->take($size);
