@@ -14,24 +14,31 @@ return new class extends Migration {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references(/**/ 'id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->comment('ID của người dùng đặt lịch (khách hàng)');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
-            $table->unsignedBigInteger('partner_id');
-            $table->foreign('partner_id')->references(/**/ 'id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('partner_id')->comment('ID của đối tác hoặc nhân viên thực hiện');
+            $table->foreign('partner_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
-            $table->decimal('total_price', 15, 0)->comment('Giá toàn bộ sản phẩm');
+            $table->decimal('total_price', 15, 0)->comment('Giá toàn bộ sản phẩm hoặc dịch vụ đã đặt');
 
-            $table->string('time_slot');
+            $table->string('time_slot')->comment('Khung giờ đặt lịch (ví dụ: "10:00-11:00")');
 
-            $table->timestamp('check_in')->nullable();
-            $table->timestamp('check_out')->nullable();
+            $table->timestamp('check_in')->nullable()->comment('Thời gian khách đến check-in');
+            $table->timestamp('check_out')->nullable()->comment('Thời gian khách check-out');
 
-            $table->string('notes')->nullable();
+            $table->string('notes')->nullable()->comment('Ghi chú từ khách hàng hoặc nhân viên');
 
-            $table->string('reason_cancel')->nullable();
+            $table->string('reason_cancel')->nullable()->comment('Lý do hủy lịch hẹn');
 
-            $table->string('status')->default(BookingStatus::PENDING);
+            $table->string('status')->default(BookingStatus::PENDING)
+                ->comment('Trạng thái lịch hẹn (Pending, Approved, Canceled, etc.)');
 
             $table->timestamps();
         });

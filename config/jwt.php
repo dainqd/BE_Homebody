@@ -153,6 +153,7 @@ return [
 //        'sub',
 //        'jti',
 //    ],
+
     'required_claims' => ['iss', 'iat', 'nbf', 'sub', 'jti'], // remove 'exp'
 
     /*
