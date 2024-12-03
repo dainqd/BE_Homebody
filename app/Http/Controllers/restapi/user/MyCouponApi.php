@@ -4,6 +4,7 @@ namespace App\Http\Controllers\restapi\user;
 
 use App\Enums\CouponStatus;
 use App\Enums\MyCouponStatus;
+use App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Coupons;
 use App\Models\MyCoupons;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class MyCouponApi extends Controller
+class MyCouponApi extends Api
 {
     protected $user;
 

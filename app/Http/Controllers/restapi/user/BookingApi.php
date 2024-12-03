@@ -4,19 +4,19 @@ namespace App\Http\Controllers\restapi\user;
 
 use App\Enums\BookingStatus;
 use App\Enums\ServiceStatus;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api;
 use App\Models\Booking;
 use App\Models\BookingServices;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class BookingApi extends Controller
+class BookingApi extends Api
 {
     protected $user;
 
     /**
-     * Instantiate a new CheckoutController instance.
+     * Instantiate a new BookingApi instance.
      *
      * @return void
      */
@@ -114,10 +114,52 @@ class BookingApi extends Controller
             $check_out = $request->input('check_out');
             $notes = $request->input('notes');
 
+            $name = $request->input('name');
+            $email = $request->input('email');
+            $phone = $request->input('phone');
+            $address = $request->input('address');
+
+            $total_price = 0;
+
+            $booking->name = $name;
+            $booking->email = $email;
+            $booking->phone = $phone;
+            $booking->address = $address;
+
             $status = BookingStatus::PROCESSING;
 
             $service_array_ = $request->input('service_array_');
-            $quantity_array_ = $request->input('quantity_array_');
+
+            if (!$service_array_) {
+                $data = returnMessage(-1, 400, null, 'Service not found!');
+                return response($data, 400);
+            }
+
+            if (!$time_slot) {
+                $data = returnMessage(-1, 400, null, 'Time slot not found!');
+                return response($data, 400);
+            }
+
+            if (!$check_in) {
+                $data = returnMessage(-1, 400, null, 'Check in not found!');
+                return response($data, 400);
+            }
+
+            if (!$name || !$email || !$phone) {
+                $data = returnMessage(-1, 400, null, 'Name, email, phone not found!');
+                return response($data, 400);
+            }
+
+            $partner_id = 0;
+
+            $first_service = $service_array_[0];
+            $service_id = $first_service['id'];
+            $service = Services::where('status', ServiceStatus::ACTIVE)
+                ->where('id', $service_id)
+                ->first();
+            if ($service) {
+                $partner_id = $service->user_id;
+            }
 
             $booking->status = $status;
             $booking->user_id = $userID;
@@ -125,14 +167,18 @@ class BookingApi extends Controller
             $booking->check_in = $check_in;
             $booking->check_out = $check_out;
             $booking->notes = $notes;
+
+            $booking->partner_id = $partner_id;
+            $booking->total_price = $total_price;
+
             $booking->save();
 
-            foreach ($service_array_ as $key => $value) {
-                $service_id = $value;
+            foreach ($service_array_ as $key => $service_item) {
+                $service_id = $service_item['id'];
                 $service = Services::where('status', ServiceStatus::ACTIVE)
                     ->where('id', $service_id)
                     ->first();
-                $quantity = $quantity_array_[$key];
+                $quantity = $service_item['quantity'];
                 if ($service) {
                     $booking_service = new BookingServices();
                     $booking_service->service_id = $service_id;
@@ -141,12 +187,17 @@ class BookingApi extends Controller
                     $price = (int)$quantity * $service->price;
                     $booking_service->price = $price;
 
+                    $total_price += $price;
+
                     $booking->partner_id = $service->user_id;
                     $booking_service->save();
                 }
             }
 
-            $data = returnMessage(1, 200, '', 'Create booking success!');
+            $booking->total_price = $total_price;
+            $booking->save();
+
+            $data = returnMessage(1, 200, $booking, 'Create booking success!');
             return response($data, 200);
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());

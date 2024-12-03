@@ -157,10 +157,6 @@ return [
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
-         * Package Service Providers...
-         */
-
-        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -168,11 +164,14 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        /*
+         * Package Service Providers...
+         */
         BenSampo\Enum\EnumServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         SocialiteProviders\Manager\ServiceProvider::class,
-        \Jlorente\Laravel\CreditCards\CreditCardsServiceProvider::class,
+        Jlorente\Laravel\CreditCards\CreditCardsServiceProvider::class,
     ])->toArray(),
 
     /*

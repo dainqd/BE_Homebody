@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\restapi\PartnerApi;
 use App\Http\Controllers\restapi\user\BookingApi;
 use App\Http\Controllers\restapi\user\CartApi;
+use App\Http\Controllers\restapi\user\CheckoutApi;
 use App\Http\Controllers\restapi\user\MyCouponApi;
 use App\Http\Controllers\restapi\user\UserApi;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +34,21 @@ Route::group(['prefix' => 'users'], function () {
 //    Route::post('clear', [CartApi::class, 'clearCart'])->name('api.auth.carts.clear');
 //});
 
+Route::group(['prefix' => 'partner'], function () {
+    Route::get('get-time', [PartnerApi::class, 'getHourlyIntervals'])->name('api.auth.partner.time.interval');
+});
+
 Route::group(['prefix' => 'bookings'], function () {
     Route::get('/list', [BookingApi::class, 'list'])->name('api.auth.bookings.list');
     Route::get('/detail/{id}', [BookingApi::class, 'detail'])->name('api.auth.bookings.detail');
     Route::post('/create', [BookingApi::class, 'create'])->name('api.auth.bookings.create');
     Route::post('/update/{id}', [BookingApi::class, 'update'])->name('api.auth.bookings.update');
     Route::post('/cancel/{id}', [BookingApi::class, 'cancel'])->name('api.auth.bookings.cancel');
+});
+
+Route::group(['prefix' => 'checkout'], function () {
+    Route::post('/create', [CheckoutApi::class, 'processStripe'])->name('api.auth.checkout.create');
+    Route::post('/send', [CheckoutApi::class, 'handleCheckout'])->name('api.auth.checkout.handle');
 });
 
 Route::group(['prefix' => 'my-coupons'], function () {
