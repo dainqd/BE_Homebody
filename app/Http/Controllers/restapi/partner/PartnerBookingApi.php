@@ -63,8 +63,8 @@ class PartnerBookingApi extends Controller
     {
         try {
             $userID = $this->partner['id'];
-            $booking = Booking::where('partner_id', $userID)
-                ->where('status', BookingStatus::DELETED)
+            $booking = Booking::where('status', '!=',BookingStatus::DELETED)
+                ->where('partner_id', $userID)
                 ->where('id', $id)
                 ->first();
 
@@ -98,7 +98,7 @@ class PartnerBookingApi extends Controller
     {
         try {
             $userID = $this->partner['id'];
-            $booking = Booking::where('status', BookingStatus::DELETED)
+            $booking = Booking::where('status', '!=',BookingStatus::DELETED)
                 ->where('partner_id', $userID)
                 ->where('id', $id)
                 ->first();

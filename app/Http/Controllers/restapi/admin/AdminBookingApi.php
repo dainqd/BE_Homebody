@@ -60,7 +60,7 @@ class AdminBookingApi extends Controller
     public function detail($id)
     {
         try {
-            $booking = Booking::where('status', BookingStatus::DELETED)
+            $booking = Booking::where('status', '!=', BookingStatus::DELETED)
                 ->where('id', $id)
                 ->first();
 
@@ -95,8 +95,7 @@ class AdminBookingApi extends Controller
         try {
             $userID = $this->admin['id'];
 
-            $booking = Booking::where('status', BookingStatus::DELETED)
-                ->where('user_id', $userID)
+            $booking = Booking::where('status', '!=', BookingStatus::DELETED)
                 ->where('id', $id)
                 ->first();
 
@@ -134,8 +133,7 @@ class AdminBookingApi extends Controller
     {
         try {
             $userID = $this->admin['id'];
-            $booking = Booking::where('status', BookingStatus::DELETED)
-                ->where('user_id', $userID)
+            $booking = Booking::where('status', '!=', BookingStatus::DELETED)
                 ->where('id', $id)
                 ->first();
 

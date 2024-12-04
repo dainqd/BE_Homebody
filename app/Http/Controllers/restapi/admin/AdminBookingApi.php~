@@ -95,8 +95,7 @@ class AdminBookingApi extends Controller
         try {
             $userID = $this->admin['id'];
 
-            $booking = Booking::where('status', BookingStatus::DELETED)
-                ->where('user_id', $userID)
+            $booking = Booking::where('status', '!=', BookingStatus::DELETED)
                 ->where('id', $id)
                 ->first();
 
@@ -107,11 +106,6 @@ class AdminBookingApi extends Controller
 
             if ($booking->status == BookingStatus::CANCELED) {
                 $data = returnMessage(-1, 400, null, 'Cannot cancel a reservation once it has been cancelled!');
-                return response($data, 400);
-            }
-
-            if ($booking->status == BookingStatus::REJECTED) {
-                $data = returnMessage(-1, 400, null, 'Cannot cancel a reservation once it has been rejected!');
                 return response($data, 400);
             }
 
