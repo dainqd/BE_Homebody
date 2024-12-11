@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\restapi\PartnerApi;
 use App\Http\Controllers\restapi\user\BookingApi;
-use App\Http\Controllers\restapi\user\CartApi;
 use App\Http\Controllers\restapi\user\CheckoutApi;
 use App\Http\Controllers\restapi\user\MyCouponApi;
 use App\Http\Controllers\restapi\user\UserApi;
@@ -48,7 +47,6 @@ Route::group(['prefix' => 'bookings'], function () {
 
 Route::group(['prefix' => 'checkout'], function () {
     Route::post('/create', [CheckoutApi::class, 'processStripe'])->name('api.auth.checkout.create');
-    Route::post('/send', [CheckoutApi::class, 'handleCheckout'])->name('api.auth.checkout.handle');
 });
 
 Route::group(['prefix' => 'my-coupons'], function () {

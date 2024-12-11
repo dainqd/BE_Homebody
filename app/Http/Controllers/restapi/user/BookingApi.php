@@ -281,11 +281,6 @@ class BookingApi extends Api
                 return response($data, 400);
             }
 
-            if ($booking->status == BookingStatus::REJECTED) {
-                $data = returnMessage(-1, 400, null, 'Cannot cancel a reservation once it has been rejected!');
-                return response($data, 400);
-            }
-
             if ($booking->status == BookingStatus::COMPLETED) {
                 $data = returnMessage(-1, 400, null, 'Cannot cancel a reservation once it has been completed!');
                 return response($data, 400);
