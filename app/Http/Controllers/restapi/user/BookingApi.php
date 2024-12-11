@@ -29,9 +29,17 @@ class BookingApi extends Api
     {
         try {
             $userID = $this->user['id'];
+
+            $status = $request->input('status');
+
             $bookings = Booking::where('user_id', $userID)
-                ->where('status', '!=', BookingStatus::DELETED)
-                ->orderByDesc('id')
+                ->where('status', '!=', BookingStatus::DELETED);
+
+            if ($status) {
+                $bookings = $bookings->where('status', $status);
+            }
+
+            $bookings = $bookings->orderByDesc('id')
                 ->cursor()
                 ->map(function (Booking $booking) use ($request) {
                     $item = $booking->toArray();
