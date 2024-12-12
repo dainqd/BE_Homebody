@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\restapi\AuthApi;
+use App\Http\Controllers\restapi\user\CheckoutApi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,9 @@ Route::group(['prefix' => 'error'], function () {
     Route::get('/forbidden', [ErrorController::class, 'forbidden'])->name('error.forbidden');
     Route::get('/unauthorized', [ErrorController::class, 'unauthorized'])->name('error.unauthorized');
 });
+
+Route::get('/test', [CheckoutApi::class, 'test'])->name('checkout.test');
+Route::post('/process-stripe', [CheckoutApi::class, 'processStripe']);
 
 
 /* Web routes */
