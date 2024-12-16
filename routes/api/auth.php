@@ -4,6 +4,7 @@ use App\Http\Controllers\restapi\PartnerApi;
 use App\Http\Controllers\restapi\user\BookingApi;
 use App\Http\Controllers\restapi\user\CheckoutApi;
 use App\Http\Controllers\restapi\user\MyCouponApi;
+use App\Http\Controllers\restapi\user\ReviewApi;
 use App\Http\Controllers\restapi\user\UserApi;
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +47,12 @@ Route::group(['prefix' => 'my-coupons'], function () {
     Route::get('search', [MyCouponApi::class, 'search'])->name('api.auth.my.coupons.search');
     Route::post('save', [MyCouponApi::class, 'saveCoupon'])->name('api.auth.my.coupons.save');
     Route::delete('delete', [MyCouponApi::class, 'delete'])->name('api.auth.my.coupons.delete');
+});
+
+Route::group(['prefix' => 'reviews'], function () {
+    Route::get('list', [ReviewApi::class, 'list'])->name('api.auth.reviews.list');
+    Route::get('detail', [ReviewApi::class, 'detail'])->name('api.auth.reviews.detail');
+    Route::post('create', [ReviewApi::class, 'create'])->name('api.auth.reviews.create');
+    Route::post('update', [ReviewApi::class, 'update'])->name('api.auth.reviews.update');
+    Route::delete('delete', [ReviewApi::class, 'delete'])->name('api.auth.reviews.delete');
 });
