@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\restapi\PartnerApi;
 use App\Http\Controllers\restapi\user\BookingApi;
-use App\Http\Controllers\restapi\user\CartApi;
 use App\Http\Controllers\restapi\user\CheckoutApi;
 use App\Http\Controllers\restapi\user\MyCouponApi;
+use App\Http\Controllers\restapi\user\ReviewApi;
 use App\Http\Controllers\restapi\user\UserApi;
 use Illuminate\Support\Facades\Route;
 
@@ -26,14 +26,6 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/change_password', [UserApi::class, 'changePassword'])->name('api.users.change.password');
 });
 
-//Route::group(['prefix' => 'carts'], function () {
-//    Route::get('list', [CartApi::class, 'list'])->name('api.auth.carts.list');
-//    Route::post('add', [CartApi::class, 'addToCart'])->name('api.auth.carts.add');
-//    Route::post('change-quantity/{id}', [CartApi::class, 'changeQuantity'])->name('api.auth.carts.change');
-//    Route::post('remove/{id}', [CartApi::class, 'removeCart'])->name('api.auth.carts.remove');
-//    Route::post('clear', [CartApi::class, 'clearCart'])->name('api.auth.carts.clear');
-//});
-
 Route::group(['prefix' => 'partner'], function () {
     Route::get('get-time', [PartnerApi::class, 'getHourlyIntervals'])->name('api.auth.partner.time.interval');
 });
@@ -42,13 +34,11 @@ Route::group(['prefix' => 'bookings'], function () {
     Route::get('/list', [BookingApi::class, 'list'])->name('api.auth.bookings.list');
     Route::get('/detail/{id}', [BookingApi::class, 'detail'])->name('api.auth.bookings.detail');
     Route::post('/create', [BookingApi::class, 'create'])->name('api.auth.bookings.create');
-    Route::post('/update/{id}', [BookingApi::class, 'update'])->name('api.auth.bookings.update');
     Route::post('/cancel/{id}', [BookingApi::class, 'cancel'])->name('api.auth.bookings.cancel');
 });
 
 Route::group(['prefix' => 'checkout'], function () {
     Route::post('/create', [CheckoutApi::class, 'processStripe'])->name('api.auth.checkout.create');
-    Route::post('/send', [CheckoutApi::class, 'handleCheckout'])->name('api.auth.checkout.handle');
 });
 
 Route::group(['prefix' => 'my-coupons'], function () {
@@ -57,4 +47,12 @@ Route::group(['prefix' => 'my-coupons'], function () {
     Route::get('search', [MyCouponApi::class, 'search'])->name('api.auth.my.coupons.search');
     Route::post('save', [MyCouponApi::class, 'saveCoupon'])->name('api.auth.my.coupons.save');
     Route::delete('delete', [MyCouponApi::class, 'delete'])->name('api.auth.my.coupons.delete');
+});
+
+Route::group(['prefix' => 'reviews'], function () {
+    Route::get('list', [ReviewApi::class, 'list'])->name('api.auth.reviews.list');
+    Route::get('detail', [ReviewApi::class, 'detail'])->name('api.auth.reviews.detail');
+    Route::post('create', [ReviewApi::class, 'create'])->name('api.auth.reviews.create');
+    Route::post('update', [ReviewApi::class, 'update'])->name('api.auth.reviews.update');
+    Route::delete('delete', [ReviewApi::class, 'delete'])->name('api.auth.reviews.delete');
 });

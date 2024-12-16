@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\restapi\user;
 
 use App\Enums\BookingStatus;
+use App\Enums\CouponStatus;
+use App\Enums\MyCouponStatus;
 use App\Enums\ServiceStatus;
 use App\Http\Controllers\Api;
 use App\Models\Booking;
+use App\Models\BookingHistories;
 use App\Models\BookingServices;
+use App\Models\Coupons;
+use App\Models\MyCoupons;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -119,6 +124,8 @@ class BookingApi extends Api
             $phone = $request->input('phone');
             $address = $request->input('address');
 
+            $homemade = $request->input('homemade');
+
             $total_price = 0;
 
             $booking->name = $name;
@@ -126,7 +133,7 @@ class BookingApi extends Api
             $booking->phone = $phone;
             $booking->address = $address;
 
-            $status = BookingStatus::PROCESSING;
+            $status = BookingStatus::PENDING;
 
             $service_array_ = $request->input('service_array_');
 
@@ -171,6 +178,10 @@ class BookingApi extends Api
             $booking->partner_id = $partner_id;
             $booking->total_price = $total_price;
 
+            if ($homemade == 'Y') {
+                $booking->homemade = 'Y';
+            }
+
             $booking->save();
 
             foreach ($service_array_ as $key => $service_item) {
@@ -194,8 +205,67 @@ class BookingApi extends Api
                 }
             }
 
+            $used_coupon = false;
+
             $booking->total_price = $total_price;
+            $booking->discount_price = $total_price;
+            $booking->vat = $total_price / 10;
+            $booking->main_total_price = $booking->discount_price + $booking->vat;
+
+            $coupon_id = $request->input('coupon_id');
+            if ($coupon_id) {
+                $coupon = Coupons::where('id', $coupon_id)
+                    ->where('status', CouponStatus::ACTIVE)
+                    ->first();
+
+                if (!$coupon) {
+                    $data = returnMessage(-1, 400, null, 'Invalid coupon code!');
+                    return response($data, 400);
+                }
+
+                $my_coupon = MyCoupons::where('coupon_id', $coupon_id)
+                    ->where('user_id', $userID)
+                    ->where('status', MyCouponStatus::UNUSED)
+                    ->first();
+
+                if (!$my_coupon) {
+                    $data = returnMessage(-1, 400, null, 'You do not have this coupon code available!');
+                    return response($data, 400);
+                }
+
+                $booking->coupon_id = $coupon_id;
+                $discount = $coupon->discount_percent;
+                $max_price = $coupon->max_discount;
+
+                $discount_price = $total_price * $discount / 100;
+
+                if ($discount_price > $max_price) {
+                    $discount_price = $max_price;
+                }
+
+                $booking->discount_price = $discount_price;
+                $booking->main_total_price = $discount_price + $booking->vat;
+
+                $used_coupon = true;
+            }
+
             $booking->save();
+
+            if ($used_coupon) {
+                $my_coupon = MyCoupons::where('coupon_id', $coupon_id)
+                    ->where('user_id', $userID)
+                    ->where('status', MyCouponStatus::UNUSED)
+                    ->first();
+
+                $my_coupon->status = MyCouponStatus::USED;
+                $my_coupon->save();
+            }
+
+            $_history = new BookingHistories();
+            $_history->booking_id = $booking->id;
+            $_history->status = BookingStatus::PENDING;
+            $_history->user_id = $booking->user_id;
+            $_history->save();
 
             $data = returnMessage(1, 200, $booking, 'Create booking success!');
             return response($data, 200);
