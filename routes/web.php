@@ -36,6 +36,7 @@ Route::group(['prefix' => 'error'], function () {
 
 Route::get('/test', [CheckoutApi::class, 'test'])->name('checkout.test');
 Route::post('/process-stripe', [CheckoutApi::class, 'processStripe']);
+Route::get('/stripe-token', [CheckoutApi::class, 'stripeToken']);
 
 
 /* Web routes */

@@ -20,6 +20,11 @@ class CheckoutApi extends Api
         return view('test');
     }
 
+    public function stripeToken()
+    {
+        return view('testv2');
+    }
+
 
     public function processStripe(Request $request)
     {
@@ -27,6 +32,7 @@ class CheckoutApi extends Api
             Stripe::setApiKey(config('services.stripe.secret'));
 
             $stripeToken = $request->input('stripeToken');
+
             $description = $request->input('description');
 
             $booking_id = $request->input('booking_id');
