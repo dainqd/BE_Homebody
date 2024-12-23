@@ -76,80 +76,13 @@ class CheckoutApi extends Api
             return response($data, 200);
 
         } catch (CardException $e) {
-            $data = returnMessage(-1, 402, null, 'Thanh toán thất bại: ' . $e->getMessage());
-            return response($data, 402);
+            $data = returnMessage(-1, 400, null, 'Thanh toán thất bại: ' . $e->getMessage());
+            return response($data, 400);
         } catch (ApiErrorException $e) {
             $data = returnMessage(-1, 500, null, 'Stripe API error: ' . $e->getMessage());
             return response($data, 500);
         } catch (\Exception $e) {
             $data = returnMessage(-1, 400, null, 'Lỗi không xác định: ' . $e->getMessage());
-            return response($data, 400);
-        }
-    }
-
-    public function handleCheckout(Request $request)
-    {
-        try {
-            $charge = Charge::create([
-                'amount' => $request->input('amount') * 100,
-                'currency' => 'usd',
-                'source' => $request->input('stripeToken'),
-                'description' => $request->input('description') ?? 'Thanh toán đơn hàng',
-            ]);
-
-            $data = returnMessage(1, 200, $charge, 'Thanh toán thành công!');
-            return response($data, 200);
-        } catch (CardException $e) {
-            $data = returnMessage(-1, 402, '', 'Thanh toán thất bại: ' . $e->getMessage());
-            return response($data, 402);
-        } catch (ApiErrorException $e) {
-            $data = returnMessage(-1, 500, '', 'Stripe API error: ' . $e->getMessage());
-            return response($data, 500);
-        } catch (\Exception $e) {
-            $data = returnMessage(-1, 400, '', 'Lỗi không xác định: ' . $e->getMessage());
-            return response($data, 400);
-        }
-    }
-
-    public function createPaymentIntent(Request $request)
-    {
-        try {
-            Stripe::setApiKey(config('services.stripe.secret'));
-
-            $intent = PaymentIntent::create([
-                'amount' => $request->amount * 100,
-                'currency' => 'usd',
-                'payment_method_types' => ['card'],
-            ]);
-
-            return response()->json([
-                'clientSecret' => $intent->client_secret,
-            ]);
-        } catch (CardException $e) {
-            $data = returnMessage(-1, 402, '', 'Thanh toán thất bại: ' . $e->getMessage());
-            return response($data, 402);
-        } catch (ApiErrorException $e) {
-            $data = returnMessage(-1, 500, '', 'Stripe API error: ' . $e->getMessage());
-            return response($data, 500);
-        } catch (\Exception $e) {
-            $data = returnMessage(-1, 400, '', 'Lỗi không xác định: ' . $e->getMessage());
-            return response($data, 400);
-        }
-    }
-
-    public function confirmPayment(Request $request)
-    {
-        try {
-            Stripe::setApiKey(config('services.stripe.secret'));
-
-            $intent = PaymentIntent::retrieve($request->payment_intent_id);
-            $intent->confirm([
-                'payment_method' => $request->payment_method,
-            ]);
-
-            return response()->json($intent);
-        } catch (\Exception $exception) {
-            $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
