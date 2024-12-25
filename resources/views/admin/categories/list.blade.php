@@ -14,7 +14,7 @@
     </div>
 
     <section class="section">
-        <table class="table table-bordered">
+        <table class="table table-hover">
             <colgroup>
                 <col width="5%">
                 <col width="x">
@@ -56,6 +56,7 @@
             @endforeach
             </tbody>
         </table>
+        {{ $categories->links('pagination::bootstrap-5') }}
     </section>
 
     <script>
@@ -85,7 +86,7 @@
                 },
                 async: false,
                 success: function (data, textStatus) {
-                    alert('Delete user successfully');
+                    alert('Delete category successfully');
                     loadingPage();
                     console.log(data)
                     window.location.reload();

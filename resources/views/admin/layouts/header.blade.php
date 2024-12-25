@@ -2,8 +2,8 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="{{ route('admin.home') }}" class="logo d-flex align-items-center">
-            <img src="{{ asset('image/logo.jpeg') }}" alt="">
-            <span class="d-none d-lg-block">HomeBodyGlam</span>
+            <img src="{{ setting() ? setting()->logo : '' }}" alt="">
+            <span class="d-none d-lg-block">{{ setting() ? setting()->home_name : '' }}</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->

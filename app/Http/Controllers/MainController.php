@@ -133,6 +133,7 @@ class MainController extends Controller
 
     private function saveRole($user_id, $role_name)
     {
+        RoleUser::where('user_id', $user_id)->delete();
         $role = Role::where('name', $role_name)->first();
         $user_role = new RoleUser();
         $user_role->role_id = $role->id;

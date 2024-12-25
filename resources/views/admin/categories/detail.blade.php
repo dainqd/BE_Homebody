@@ -56,12 +56,12 @@
         </form>
     </section>
     <script>
-        let token = `Bearer ` + accessToken;
-        let headers = {
-            "Authorization": token
-        };
-
         async function updateCategory() {
+            let token = `Bearer ` + accessToken;
+            let headers = {
+                "Authorization": token
+            };
+
             let categoryUrl = '{{ route('api.admin.categories.update', $category->id) }}';
             loadingPage();
 

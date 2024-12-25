@@ -25,6 +25,7 @@
     - Chọn dịch vụ mong muốn, chọn thời gian, tên, địa chỉ để xác nhận thanh toán
 
 ### Thanh toán
+
     - Thanh toán đặt trước(cần generate ra một token cho stripe)
     - Api thanh toán đặt trước:/api/checkout/create
     - Body thanh toán đặt trước(Lưu ý gửi kèm token của user):
@@ -36,4 +37,5 @@
     
     - Url test thanh toán: https://homebodyglam.com/test
     - Url generate token thanh toán: https://homebodyglam.com/stripe-token
-    
+
+## Partner
