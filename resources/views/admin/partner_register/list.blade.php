@@ -14,7 +14,7 @@
     </div>
 
     <section class="section">
-        <table class="table table-bordered">
+        <table class="table table-hover">
             <colgroup>
                 <col width="5%">
                 <col width="20%">
@@ -60,6 +60,7 @@
             @endforeach
             </tbody>
         </table>
+        {{ $partners->links('pagination::bootstrap-5') }}
     </section>
 
     <script>

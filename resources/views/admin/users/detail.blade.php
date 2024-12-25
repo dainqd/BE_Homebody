@@ -14,9 +14,7 @@
     </div>
 
     <section class="section">
-        <table class="table table-bordered">
 
-        </table>
     </section>
     <script>
         async function updateUser() {

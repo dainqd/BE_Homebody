@@ -35,7 +35,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>Partner Register</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
@@ -62,6 +62,26 @@
             </ul>
         </li>
         <!-- End Orders Nav -->
+
+        <!-- Start Coupons Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#coupons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-receipt"></i><span>Coupons</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="coupons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.coupons.list') }}">
+                        <i class="bi bi-circle"></i><span>List Coupons</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.coupons.create') }}">
+                        <i class="bi bi-circle"></i><span>Create Coupon</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End Coupons Nav -->
 
         <!-- Start Contacts Nav -->
         <li class="nav-item">

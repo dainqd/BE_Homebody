@@ -5,14 +5,17 @@ namespace App\Http\Controllers\admin;
 use App\Enums\CategoryStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
+use Illuminate\Http\Request;
 
 class AdminCategoryController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
+        $size = $request->input('size') ?? 10;
+        $size = intval($size);
         $categories = Categories::where('status', '!=', CategoryStatus::DELETED)
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($size);
 
         return view('admin.categories.list', compact('categories'));
     }

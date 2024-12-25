@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\admin\AdminCategoryController;
+use App\Http\Controllers\admin\AdminCouponController;
 use App\Http\Controllers\admin\AdminHomeController;
 use App\Http\Controllers\admin\AdminPartnerRegisterController;
 use App\Http\Controllers\admin\AdminUserController;
@@ -33,4 +34,10 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('/list', [AdminUserController::class, 'list'])->name('admin.users.list');
     Route::get('/detail/{id}', [AdminUserController::class, 'detail'])->name('admin.users.detail');
     Route::get('/create', [AdminUserController::class, 'create'])->name('admin.users.create');
+});
+
+Route::group(['prefix' => 'coupons'], function () {
+    Route::get('list', [AdminCouponController::class, 'list'])->name('admin.coupons.list');
+    Route::get('detail/{id}', [AdminCouponController::class, 'detail'])->name('admin.coupons.detail');
+    Route::get('create', [AdminCouponController::class, 'create'])->name('admin.coupons.create');
 });
