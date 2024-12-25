@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Enums\RoleName;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -31,7 +33,13 @@ class AdminUserController extends Controller
         if (!$user) {
             return redirect(route('error.not.found'));
         }
-        return view('admin.users.detail', compact('user'));
+        $role = null;
+        $role_user = RoleUser::where('user_id', $id)->first();
+        if ($role_user) {
+            $role = Role::where('id', $role_user->role_id)->first();
+        }
+
+        return view('admin.users.detail', compact('user', 'role'));
     }
 
     public function create()

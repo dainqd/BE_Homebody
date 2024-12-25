@@ -49,12 +49,13 @@
         </form>
     </section>
     <script>
-        let token = `Bearer ` + accessToken;
-        let headers = {
-            "Authorization": token
-        };
-
         async function createCategory() {
+            let token = `Bearer ` + accessToken;
+            let headers = {
+                "Authorization": token
+            };
+
+
             let categoryUrl = '{{ route('api.admin.categories.create') }}';
             loadingPage();
 

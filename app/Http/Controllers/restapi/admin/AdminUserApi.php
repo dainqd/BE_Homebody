@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\restapi\admin;
 
+use App\Enums\RoleName;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -222,6 +224,13 @@ class AdminUserApi extends Controller
             $user = $this->save($user, $request);
             $user->save();
 
+            $role = $request->input('role');
+            if ($role == RoleName::PARTNER) {
+                (new MainController())->saveRolePartner($user->id);
+            } else {
+                (new MainController())->saveRoleUser($user->id);
+            }
+
             $data = returnMessage(1, 200, $user, 'Create success');
             return response($data, 200);
         } catch (\Exception $exception) {
@@ -313,6 +322,13 @@ class AdminUserApi extends Controller
 
             $user = $this->save($user, $request);
             $user->save();
+
+            $role = $request->input('role');
+            if ($role == RoleName::PARTNER) {
+                (new MainController())->saveRolePartner($user->id);
+            } else {
+                (new MainController())->saveRoleUser($user->id);
+            }
 
             $data = returnMessage(1, 200, $user, 'Update success!');
             return response($data, 200);

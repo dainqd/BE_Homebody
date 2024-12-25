@@ -45,7 +45,9 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->role_name }}</td>
-                    <td>{{ $user->address }}</td>
+                    <td>
+                        <div class="text-truncate">{{ $user->address }}</div>
+                    </td>
                     <td>{{ $user->status }}</td>
                     <td>
                         <div class="d-flex gap-2">
