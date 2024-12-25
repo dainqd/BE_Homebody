@@ -10,4 +10,9 @@ class AdminHomeController extends Controller
     {
         return view('admin.dashboard');
     }
+
+    public function setting()
+    {
+        return view('admin.settings.index');
+    }
 }

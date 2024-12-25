@@ -127,6 +127,21 @@
         </li>
         <!-- End Revenue Nav -->
 
+        <!-- Start Setting Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#setting-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-gear"></i><span>Setting</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="setting-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.app.setting') }}">
+                        <i class="bi bi-circle"></i><span>App setting</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End Setting Nav -->
+
         <li class="nav-heading">Pages</li>
 
         <!--Start Profile Page Nav -->

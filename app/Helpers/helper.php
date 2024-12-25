@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Settings;
+
 if (!function_exists('returnMessage')) {
     /**
      * @param int $type
@@ -30,5 +32,12 @@ if (!function_exists('returnMessage')) {
             'message' => $message,
             'data' => $data,
         ];
+    }
+}
+
+if (!function_exists('setting')) {
+    function setting()
+    {
+        return Settings::first();
     }
 }
