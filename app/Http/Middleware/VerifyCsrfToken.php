@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/api/*',
         '/auth/*',
+        '/admin/answers/delete/*',
         'process-stripe'
     ];
 }
