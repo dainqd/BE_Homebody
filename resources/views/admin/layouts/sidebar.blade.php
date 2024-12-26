@@ -4,7 +4,8 @@
 
         <!-- Start Dashboard Nav -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.home') ? 'active' : 'collapsed' }}" href="{{ route('admin.home') }}">
+            <a class="nav-link {{ Request::routeIs('admin.home') ? 'active' : 'collapsed' }}"
+               href="{{ route('admin.home') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -27,7 +28,8 @@
                     </a>
                 </li>
                 <li>
-                    <a  class="{{ Request::routeIs('admin.categories.create') ? 'active' : '' }}" href="{{ route('admin.categories.create') }}">
+                    <a class="{{ Request::routeIs('admin.categories.create') ? 'active' : '' }}"
+                       href="{{ route('admin.categories.create') }}">
                         <i class="bi bi-circle"></i><span>Create Category</span>
                     </a>
                 </li>
@@ -40,7 +42,7 @@
             <a class="nav-link {{ Request::routeIs('admin.partner.register.*') ? '' : 'collapsed' }}"
                data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>Partner Register</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav"
                 class="nav-content collapse {{ Request::routeIs('admin.partner.register.*') ? 'show' : '' }}"
@@ -60,7 +62,7 @@
             <a class="nav-link {{ Request::routeIs('admin.orders.*') ? '' : 'collapsed' }}" data-bs-target="#tables-nav"
                data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>Order</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="tables-nav" class="nav-content collapse {{ Request::routeIs('admin.orders.*') ? 'show' : '' }}"
                 data-bs-parent="#sidebar-nav">
@@ -99,14 +101,15 @@
 
         <!-- Start Contacts Nav -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.contact.*') ? '' : 'collapsed' }}"
+            <a class="nav-link {{ Request::routeIs('admin.contacts.*') ? '' : 'collapsed' }}"
                data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-bar-chart"></i><span>Contact</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="charts-nav" class="nav-content collapse {{ Request::routeIs('admin.contact.*') ? 'show' : '' }}"
+            <ul id="charts-nav" class="nav-content collapse {{ Request::routeIs('admin.contacts.*') ? 'show' : '' }}"
                 data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="">
+                    <a class="{{ Request::routeIs('admin.contacts.list') || Request::routeIs('admin.contacts.detail') ? 'active' : '' }}"
+                       href="{{ route('admin.contacts.list') }}">
                         <i class="bi bi-circle"></i><span>List Contact</span>
                     </a>
                 </li>
@@ -160,6 +163,12 @@
                     <a class="{{ Request::routeIs('admin.app.setting') ? 'active' : '' }}"
                        href="{{ route('admin.app.setting') }}">
                         <i class="bi bi-circle"></i><span>App setting</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="{{ Request::routeIs('admin.app.term.and.policies.*') ? 'active' : '' }}"
+                       href="{{ route('admin.app.term.and.policies.list') }}">
+                        <i class="bi bi-circle"></i><span>Term and policies</span>
                     </a>
                 </li>
             </ul>
