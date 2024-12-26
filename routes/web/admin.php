@@ -11,14 +11,21 @@
 |
 */
 
+use App\Http\Controllers\admin\AdminAnswerController;
 use App\Http\Controllers\admin\AdminCategoryController;
+use App\Http\Controllers\admin\AdminContactController;
 use App\Http\Controllers\admin\AdminCouponController;
 use App\Http\Controllers\admin\AdminHomeController;
 use App\Http\Controllers\admin\AdminPartnerRegisterController;
+use App\Http\Controllers\admin\AdminQuestionController;
+use App\Http\Controllers\admin\AdminRevenueController;
 use App\Http\Controllers\admin\AdminSettingController;
+use App\Http\Controllers\admin\AdminTermsAndPolicyController;
 use App\Http\Controllers\admin\AdminUserController;
 
 Route::get('/dashboard', [AdminHomeController::class, 'dashboard'])->name('admin.home');
+
+Route::get('/revenues/show', [AdminRevenueController::class, 'index'])->name('admin.revenues.show');
 
 Route::group(['prefix' => 'partner-register'], function () {
     Route::get('/list', [AdminPartnerRegisterController::class, 'list'])->name('admin.partner.register.list');
@@ -42,7 +49,38 @@ Route::group(['prefix' => 'coupons'], function () {
     Route::get('detail/{id}', [AdminCouponController::class, 'detail'])->name('admin.coupons.detail');
     Route::get('create', [AdminCouponController::class, 'create'])->name('admin.coupons.create');
 });
+
+Route::group(['prefix' => 'contacts'], function () {
+    Route::get('list', [AdminContactController::class, 'list'])->name('admin.contacts.list');
+    Route::get('detail/{id}', [AdminContactController::class, 'detail'])->name('admin.contacts.detail');
+    Route::post('update/{id}', [AdminContactController::class, 'update'])->name('admin.contacts.update');
+});
+
 Route::group(['prefix' => 'app'], function () {
     Route::get('/setting', [AdminHomeController::class, 'setting'])->name('admin.app.setting');
     Route::post('/setting', [AdminSettingController::class, 'appSetting'])->name('admin.save.setting');
+    Route::get('/term-and-policies/list', [AdminTermsAndPolicyController::class, 'list'])->name('admin.app.term.and.policies.list');
+    Route::get('/term-and-policies/create', [AdminTermsAndPolicyController::class, 'create'])->name('admin.app.term.and.policies.create');
+    Route::post('/term-and-policies/store', [AdminTermsAndPolicyController::class, 'store'])->name('admin.app.term.and.policies.store');
+    Route::get('/term-and-policies/detail/{id}', [AdminTermsAndPolicyController::class, 'detail'])->name('admin.app.term.and.policies.detail');
+    Route::put('/term-and-policies/update/{id}', [AdminTermsAndPolicyController::class, 'update'])->name('admin.app.term.and.policies.update');
+    Route::delete('/term-and-policies/delete/{id}', [AdminTermsAndPolicyController::class, 'delete'])->name('admin.app.term.and.policies.delete');
+});
+
+Route::group(['prefix' => 'questions'], function () {
+    Route::get('/list', [AdminQuestionController::class, 'list'])->name('admin.qna.questions.list');
+    Route::get('/detail/{id}', [AdminQuestionController::class, 'detail'])->name('admin.qna.questions.detail');
+    Route::get('/create', [AdminQuestionController::class, 'create'])->name('admin.qna.questions.create');
+    Route::get('/store', [AdminQuestionController::class, 'store'])->name('admin.qna.questions.store');
+    Route::get('/update/{id}', [AdminQuestionController::class, 'update'])->name('admin.qna.questions.update');
+    Route::get('/delete/{id}', [AdminQuestionController::class, 'delete'])->name('admin.qna.questions.delete');
+});
+
+Route::group(['prefix' => 'answers'], function () {
+    Route::get('/list', [AdminAnswerController::class, 'list'])->name('admin.qna.answers.list');
+    Route::get('/detail/{id}', [AdminAnswerController::class, 'detail'])->name('admin.qna.answers.detail');
+    Route::get('/create', [AdminAnswerController::class, 'create'])->name('admin.qna.answers.create');
+    Route::get('/store', [AdminAnswerController::class, 'store'])->name('admin.qna.answers.store');
+    Route::get('/update/{id}', [AdminAnswerController::class, 'update'])->name('admin.qna.answers.update');
+    Route::get('/delete/{id}', [AdminAnswerController::class, 'delete'])->name('admin.qna.answers.delete');
 });

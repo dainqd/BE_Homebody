@@ -105,7 +105,7 @@
                     </th>
                     <td colspan="">
                         <div class="d-flex justify-content-between flex-wrap">
-                            <input type="file" multiple name="thumbnail" id="thumbnail" class="form-control w-75">
+                            <input type="file" multiple name="thumbnail[]" id="thumbnail" class="form-control w-75">
                             <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                     data-bs-target="#examplethumbnail">View thumbnail
                             </button>
