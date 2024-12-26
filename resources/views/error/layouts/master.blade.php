@@ -6,12 +6,31 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>@yield('title')</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('admin/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('admin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ setting() ? setting()->favicon : asset('admin/img/favicon.png') }}" rel="icon">
+    <link href="{{ setting() ? setting()->favicon : asset('admin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+    <!-- Meta tag seo -->
+    <meta name="description" content="{{ setting() ? setting()->meta_tag : '' }}">
+    <meta name="keywords" content="{{ setting() ? setting()->meta_keyword : '' }}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="{{ setting() ? setting()->og_title : '' }}">
+    <meta property="og:description" content="{{ setting() ? setting()->og_des : '' }}">
+    <meta property="og:image" content="{{ setting() ? setting()->og_img : '' }}">
+    <meta property="og:url" content="{{ setting() ? setting()->og_url : '' }}">
+    <meta property="og:type" content="{{ setting() ? setting()->og_site : '' }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="{{ setting() ? setting()->og_site : '' }}">
+    <meta name="twitter:title" content="{{ setting() ? setting()->og_title : '' }}">
+    <meta name="twitter:description" content="{{ setting() ? setting()->og_des : '' }}">
+    <meta name="twitter:image" content="{{ setting() ? setting()->og_img : '' }}">
+
+    <!-- Meta Author -->
+    <meta name="author" content="{{ setting() ? setting()->owner_name : '' }}">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
