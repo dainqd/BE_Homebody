@@ -16,12 +16,14 @@
     <meta name="keywords" content="{{ setting() ? setting()->meta_keyword : '' }}">
     <meta name="robots" content="index, follow">
 
+    <meta name="google-site-verification"
+          content="{{ setting() ? setting()->og_site : 'bhZ6nlhhqPi_NXa_Rbjp3drDJrxMwRd9BBxjALzVL8I' }}"/>
+
     <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:title" content="{{ setting() ? setting()->og_title : '' }}">
     <meta property="og:description" content="{{ setting() ? setting()->og_des : '' }}">
     <meta property="og:image" content="{{ setting() ? setting()->og_img : '' }}">
     <meta property="og:url" content="{{ setting() ? setting()->og_url : '' }}">
-    <meta property="og:type" content="{{ setting() ? setting()->og_site : '' }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="{{ setting() ? setting()->og_site : '' }}">
@@ -35,8 +37,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet">
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -116,7 +118,7 @@
 <!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+        class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
 <script src="{{ asset('admin/vendor/apexcharts/apexcharts.min.js') }}"></script>

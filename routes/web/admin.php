@@ -71,16 +71,16 @@ Route::group(['prefix' => 'questions'], function () {
     Route::get('/list', [AdminQuestionController::class, 'list'])->name('admin.qna.questions.list');
     Route::get('/detail/{id}', [AdminQuestionController::class, 'detail'])->name('admin.qna.questions.detail');
     Route::get('/create', [AdminQuestionController::class, 'create'])->name('admin.qna.questions.create');
-    Route::get('/store', [AdminQuestionController::class, 'store'])->name('admin.qna.questions.store');
-    Route::get('/update/{id}', [AdminQuestionController::class, 'update'])->name('admin.qna.questions.update');
-    Route::get('/delete/{id}', [AdminQuestionController::class, 'delete'])->name('admin.qna.questions.delete');
+    Route::post('/store', [AdminQuestionController::class, 'store'])->name('admin.qna.questions.store');
+    Route::put('/update/{id}', [AdminQuestionController::class, 'update'])->name('admin.qna.questions.update');
+    Route::delete('/delete/{id}', [AdminQuestionController::class, 'delete'])->name('admin.qna.questions.delete');
 });
 
 Route::group(['prefix' => 'answers'], function () {
     Route::get('/list', [AdminAnswerController::class, 'list'])->name('admin.qna.answers.list');
     Route::get('/detail/{id}', [AdminAnswerController::class, 'detail'])->name('admin.qna.answers.detail');
     Route::get('/create', [AdminAnswerController::class, 'create'])->name('admin.qna.answers.create');
-    Route::get('/store', [AdminAnswerController::class, 'store'])->name('admin.qna.answers.store');
-    Route::get('/update/{id}', [AdminAnswerController::class, 'update'])->name('admin.qna.answers.update');
-    Route::get('/delete/{id}', [AdminAnswerController::class, 'delete'])->name('admin.qna.answers.delete');
+    Route::post('/store', [AdminAnswerController::class, 'store'])->name('admin.qna.answers.store');
+    Route::put('/update/{id}', [AdminAnswerController::class, 'update'])->name('admin.qna.answers.update');
+    Route::delete('/delete/{id}', [AdminAnswerController::class, 'delete'])->name('admin.qna.answers.delete');
 });

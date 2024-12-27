@@ -11,7 +11,9 @@ class AdminTermsAndPolicyController extends Controller
     public function list(Request $request)
     {
         try {
-            $data = TermsAndPolicies::all();
+            $size = $request->input('size') ?? 10;
+            $size = intval($size);
+            $data = TermsAndPolicies::paginate($size);
             return view('admin.terms_and_policies.list', compact('data'));
         } catch (\Exception $exception) {
             \Log::error($exception->getMessage());
@@ -70,7 +72,7 @@ class AdminTermsAndPolicyController extends Controller
             $term->save();
 
             alert()->success('Create successfully!');
-            return redirect(route(''));
+            return redirect(route('admin.app.term.and.policies.list'));
         } catch (\Exception $exception) {
             \Log::error($exception->getMessage());
             alert()->error('Error, Please try again!');
@@ -106,7 +108,7 @@ class AdminTermsAndPolicyController extends Controller
             $data->save();
 
             alert()->success('Update successfully!');
-            return redirect(route(''));
+            return redirect(route('admin.app.term.and.policies.list'));
         } catch (\Exception $exception) {
             \Log::error($exception->getMessage());
             alert()->error('Error, Please try again!');
@@ -124,7 +126,7 @@ class AdminTermsAndPolicyController extends Controller
             }
             TermsAndPolicies::where('id', $id)->delete();
             alert()->success('Delete successfully!');
-            return redirect(route(''));
+            return redirect(route('admin.app.term.and.policies.list'));
         } catch (\Exception $exception) {
             \Log::error($exception->getMessage());
             alert()->error('Error, Please try again!');

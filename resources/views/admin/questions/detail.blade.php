@@ -1,102 +1,127 @@
 @extends('admin.layouts.master')
 @section('title')
-    Detail Category
+    Detail Questions
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1>Category</h1>
+        <h1>Questions</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Detail Category</li>
+                <li class="breadcrumb-item active">Detail Question</li>
             </ol>
         </nav>
     </div>
-
+    <div class="w-100 d-flex justify-content-end align-items-center mt-3 mb-3">
+        <a href="{{ route('admin.qna.answers.create') . "?question=" . $question->id }}" class="btn btn-primary">
+            Write new answer</a>
+    </div>
     <section class="section">
-        <form id="formUpdate">
-            <div class="form-group">
-                <label for="name">Name Category</label>
-                <input type="text" class="form-control" name="name" id="name"
-                       value="{{ $category->name }}"
-                       placeholder="Please enter name category">
-            </div>
+        <form id="formUpdate" action="{{ route('admin.qna.questions.update',$question->id ) }}" method="post">
+            @csrf
+            @method('PUT')
             <div class="row">
-                <div class="form-group col-md-4">
-                    <label for="thumbnail">Thumbnail</label>
-                    <input type="file" class="form-control" name="thumbnail" id="thumbnail">
-                    <img src="{{ $category->thumbnail }}" alt="" class="mt-2" style="width: 200px">
+                <div class="form-group col-md-9">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" id=title"
+                           value="{{ $question->title }}"
+                           placeholder="Please enter title">
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="parent_id">Parent</label>
-                    <select id="parent_id" name="parent_id" class="form-control">
-                        <option value="">Choose...</option>
-                        @foreach($categories as $item)
-                            <option
-                                {{ isset($category) && $category->parent_id == $item->id ? 'selected' : '' }}
-                                value="{{ $item->id }}">
-                                {{ $item->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="status">Status</label>
-                    <select id="status" name="status" class="form-control">
-                        <option {{  $category->status == \App\Enums\CategoryStatus::ACTIVE ?  'selected' : ''}}
-                                value="{{ \App\Enums\CategoryStatus::ACTIVE }}">{{ \App\Enums\CategoryStatus::ACTIVE }}</option>
-                        <option {{  $category->status == \App\Enums\CategoryStatus::INACTIVE ? 'selected' : ''}}
-                                value="{{ \App\Enums\CategoryStatus::INACTIVE }}">{{ \App\Enums\CategoryStatus::INACTIVE }}</option>
+                    <select id="status" name="status" class="form-select">
+                        <option {{  $question->status == \App\Enums\QuestionStatus::ACTIVE ?  'selected' : ''}}
+                                value="{{ \App\Enums\QuestionStatus::ACTIVE }}">{{ \App\Enums\QuestionStatus::ACTIVE }}</option>
+                        <option {{  $question->status == \App\Enums\QuestionStatus::INACTIVE ?  'selected' : ''}}
+                                value="{{ \App\Enums\QuestionStatus::INACTIVE }}">{{ \App\Enums\QuestionStatus::INACTIVE }}</option>
                     </select>
                 </div>
             </div>
-            <button type="button" id="btnUpdate" class="btn btn-primary mt-3" onclick="updateCategory();">
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="form-control" rows="30">{{ $question->content }}</textarea>
+            </div>
+
+            <h5 class="mt-5">List Answer</h5>
+            <section class="section">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col width="5%">
+                        <col width="x">
+                        <col width="15%">
+                        <col width="15%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($answers as $answer)
+                        <tr>
+                            <th scope="row">{{ $loop->index + 1 }}</th>
+                            <td>{{ $answer->title }}</td>
+                            <td>{{ $answer->status }}</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.qna.answers.detail', $answer->id) }}"
+                                       class="btn btn-success">View</a>
+                                    <button type="button" data-id="{{ $answer->id }}" class="btn btn-danger btnDelete">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                {{ $answers->links('pagination::bootstrap-5') }}
+            </section>
+
+            <button type="submit" id="btnUpdate" class="btn btn-primary mt-3">
                 Save Changes
             </button>
         </form>
     </section>
     <script>
-        async function updateCategory() {
-            let token = `Bearer ` + accessToken;
-            let headers = {
-                "Authorization": token
-            };
+        $('.btnDelete').on('click', function () {
+            let id = $(this).data('id');
+            if (confirm('Are you want to delete answer?')) {
+                deleteItem(id);
+            }
+        })
 
-            let categoryUrl = '{{ route('api.admin.categories.update', $category->id) }}';
+        async function deleteItem(id) {
             loadingPage();
 
-            $('#btnUpdate').prop('disabled', true).text('Saving...');
+            let url = `{{ route('admin.qna.answers.delete', ':id') }}`;
+            url = url.replace(':id', id);
 
-            let inputs = $('#formUpdate input, #formUpdate textarea');
-            for (let i = 0; i < inputs.length; i++) {
-                if (!$(inputs[i]).val() && $(inputs[i]).attr('type') !== 'file' && $(inputs[i]).attr('type') !== 'hidden') {
-                    let text = $(inputs[i]).prev().text();
-                    alert(text + ' cannot be left blank!');
-                    $('#btnUpdate').prop('disabled', false).text('Save Changes');
-                    loadingPage();
-                    return;
-                }
-            }
-
-            const formData = new FormData($('#formUpdate')[0]);
-
-            await $.ajax({
-                url: categoryUrl,
-                method: 'POST',
-                headers: headers,
-                contentType: false,
-                cache: false,
-                processData: false,
-                data: formData,
-                success: function (response) {
-                    alert('Update success!');
-                    window.location.href = `{{ route('admin.categories.list') }}`;
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    'id': id
                 },
-                error: function (error) {
-                    console.log(error);
-                    alert(error.responseJSON.message);
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                async: false,
+                success: function (data, textStatus) {
+                    alert('Delete answers successfully');
                     loadingPage();
-                    $('#btnUpdate').prop('disabled', false).text('Save Changes');
+                    console.log(data)
+                    window.location.reload();
+                },
+                error: function (request, status, error) {
+                    let data = JSON.parse(request.responseText);
+                    alert(data.message);
+                    loadingPage();
                 }
             });
         }

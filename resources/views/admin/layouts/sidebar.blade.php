@@ -187,7 +187,8 @@
         <!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.qna.*') ? 'active' : 'collapsed' }}" href="#">
+            <a class="nav-link {{ Request::routeIs('admin.qna.*') ? 'active' : 'collapsed' }}"
+               href="{{ route('admin.qna.questions.list') }}">
                 <i class="bi bi-question-circle"></i>
                 <span>Q&A</span>
             </a>
