@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\restapi\admin\AdminBookingApi;
 use App\Http\Controllers\restapi\admin\AdminCategoryApi;
+use App\Http\Controllers\restapi\admin\AdminContactApi;
 use App\Http\Controllers\restapi\admin\AdminCouponApi;
 use App\Http\Controllers\restapi\admin\AdminPartnerRegisterApi;
 use App\Http\Controllers\restapi\admin\AdminReviewApi;
@@ -65,4 +66,9 @@ Route::group(['prefix' => 'reviews'], function () {
     Route::get('detail', [AdminReviewApi::class, 'detail'])->name('api.admin.reviews.detail');
     Route::post('update', [AdminReviewApi::class, 'update'])->name('api.admin.reviews.update');
     Route::delete('delete', [AdminReviewApi::class, 'delete'])->name('api.admin.reviews.delete');
+});
+
+Route::group(['prefix' => 'contacts'], function () {
+    Route::post('update', [AdminContactApi::class, 'update'])->name('api.admin.contacts.update');
+    Route::delete('delete', [AdminContactApi::class, 'delete'])->name('api.admin.contacts.delete');
 });

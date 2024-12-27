@@ -26,32 +26,28 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Phone</th>
+                <th scope="col">Subject</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($partners as $partner)
+            @foreach($contacts as $contact)
                 <tr>
                     <th scope="row">{{ $loop->index + 1 }}</th>
-                    <td>{{ $partner->name }}</td>
-                    <td>{{ $partner->email }}</td>
-                    <td>{{ $partner->phone }}</td>
-                    <td>{{ $partner->status }}</td>
+                    <td>{{ $contact->first_name }}</td>
+                    <td>{{ $contact->last_name }}</td>
+                    <td>{{ $contact->email }}</td>
+                    <td>{{ $contact->subject }}</td>
+                    <td>{{ $contact->status }}</td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('admin.partner.register.detail', $partner->id) }}"
+                            <a href="{{ route('admin.contacts.detail', $contact->id) }}"
                                class="btn btn-success">View</a>
-                            <button type="button" data-id="{{ $partner->id }}" class="btn btn-primary btnApprove">
-                                Approve
-                            </button>
-                            <button type="button" data-id="{{ $partner->id }}" class="btn btn-warning btnCancel">
-                                Reject
-                            </button>
-                            <button type="button" data-id="{{ $partner->id }}" class="btn btn-danger btnDelete">
+                            <button type="button" data-id="{{ $contact->id }}" class="btn btn-danger btnDelete">
                                 Delete
                             </button>
                         </div>
@@ -60,54 +56,28 @@
             @endforeach
             </tbody>
         </table>
-        {{ $partners->links('pagination::bootstrap-5') }}
+        {{ $contacts->links('pagination::bootstrap-5') }}
     </section>
 
     <script>
-        $('.btnApprove').on('click', function () {
-            let id = $(this).data('id');
-            if (confirm('Are you want to approve partner?')) {
-                updatePartner('approve', 'update', id);
-            }
-        })
-
-        $('.btnCancel').on('click', function () {
-            let id = $(this).data('id');
-            if (confirm('Are you want to reject partner?')) {
-                updatePartner('reject', 'update', id);
-            }
-        })
 
         $('.btnDelete').on('click', function () {
             let id = $(this).data('id');
-            if (confirm('Are you want to delete partner?')) {
-                updatePartner('delete', 'delete', id);
+            if (confirm('Are you want to delete contact?')) {
+                updatePartner(id);
             }
         })
 
-        async function updatePartner(type, mode, id) {
+        async function updatePartner(id) {
             loadingPage();
-            let status;
-            if (type === 'approve') {
-                status = `{{ \App\Enums\PartnerRegisterStatus::APPROVED }}`;
-            } else {
-                status = `{{ \App\Enums\PartnerRegisterStatus::REJECTED }}`;
-            }
 
-            let url;
-            let method;
-            if (mode === 'update') {
-                url = `{{ route('api.admin.partner.register.update', ['id'=>':id']) }}`;
-                method = 'POST';
-            } else {
-                url = `{{ route('api.admin.partner.register.delete', ['id'=>':id']) }}`;
-                method = 'DELETE';
-            }
+            let url = `{{ route('api.admin.contacts.delete', ['id'=>':id']) }}`;
+            let method = 'DELETE';
 
             url = url.replace(':id', id);
 
             let data = {
-                'status': status
+                'status': '{{ \App\Enums\ContactStatus::DELETED }}'
             }
 
             data = JSON.stringify(data);
@@ -123,7 +93,7 @@
                 },
                 async: false,
                 success: function (data, textStatus) {
-                    alert('Partner register updated successfully');
+                    alert('Delete successfully');
                     loadingPage();
                     console.log(data)
                     window.location.reload();
