@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Enums\ContactStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class AdminContactController extends Controller
@@ -10,41 +12,30 @@ class AdminContactController extends Controller
     public function list(Request $request)
     {
         try {
-            $data = returnMessage(1, 200, '', 'Success');
-            return response($data, 200);
+            $size = $request->input('size') ?? 10;
+            $size = intval($size);
+            $contacts = Contact::where('status', '!=', ContactStatus::DELETED)
+                ->orderBy('id', 'desc')
+                ->paginate($size);
+            return view('admin.contacts.list', compact('contacts'));
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
         }
     }
 
-    public function detail(Request $request)
+    public function detail(Request $request, $id)
     {
         try {
-            $data = returnMessage(1, 200, '', 'Success');
-            return response($data, 200);
-        } catch (\Exception $exception) {
-            $data = returnMessage(-1, 400, '', $exception->getMessage());
-            return response($data, 400);
-        }
-    }
+            $contact = Contact::where('id', $id)
+                ->where('status', '!=', ContactStatus::DELETED)
+                ->first();
 
-    public function update(Request $request)
-    {
-        try {
-            $data = returnMessage(1, 200, '', 'Success');
-            return response($data, 200);
-        } catch (\Exception $exception) {
-            $data = returnMessage(-1, 400, '', $exception->getMessage());
-            return response($data, 400);
-        }
-    }
+            if (!$contact) {
+                return redirect(route('error.not.found'));
+            }
 
-    public function delete(Request $request)
-    {
-        try {
-            $data = returnMessage(1, 200, '', 'Success');
-            return response($data, 200);
+            return view('admin.contacts.detail', compact('contact'));
         } catch (\Exception $exception) {
             $data = returnMessage(-1, 400, '', $exception->getMessage());
             return response($data, 400);
