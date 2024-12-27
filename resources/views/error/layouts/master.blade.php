@@ -16,12 +16,13 @@
     <meta name="keywords" content="{{ setting() ? setting()->meta_keyword : '' }}">
     <meta name="robots" content="index, follow">
 
+    <meta name="google-site-verification" content="{{ setting() ? setting()->og_site : 'bhZ6nlhhqPi_NXa_Rbjp3drDJrxMwRd9BBxjALzVL8I' }}" />
+
     <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:title" content="{{ setting() ? setting()->og_title : '' }}">
     <meta property="og:description" content="{{ setting() ? setting()->og_des : '' }}">
     <meta property="og:image" content="{{ setting() ? setting()->og_img : '' }}">
     <meta property="og:url" content="{{ setting() ? setting()->og_url : '' }}">
-    <meta property="og:type" content="{{ setting() ? setting()->og_site : '' }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="{{ setting() ? setting()->og_site : '' }}">
