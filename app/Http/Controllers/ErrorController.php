@@ -11,13 +11,15 @@ class ErrorController extends Controller
         return view('error.404');
     }
 
-    public function unauthorized()
+    public function unauthorized(Request $request)
     {
-        return view('error.401');
+        $callback = $request->input('callback');
+        return view('error.401', compact('callback'));
     }
 
-    public function forbidden()
+    public function forbidden(Request $request)
     {
-        return view('error.403');
+        $callback = $request->input('callback');
+        return view('error.403', compact('callback'));
     }
 }

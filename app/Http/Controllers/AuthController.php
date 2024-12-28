@@ -13,12 +13,13 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function processLogin()
+    public function processLogin(Request $request)
     {
+        $url_callback = $request->input('url_callback');
         if (Auth::check()) {
             return redirect(route('admin.home'));
         }
-        return view('auth.login');
+        return view('auth.login', compact('url_callback'));
     }
 
     public function handleLogin(Request $request)
