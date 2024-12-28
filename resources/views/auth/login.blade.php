@@ -44,6 +44,8 @@
                                         <div class="invalid-feedback">Please enter your password!</div>
                                     </div>
 
+                                    <input type="hidden" name="url_callback" id="url_callback" value="">
+
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Login</button>
                                     </div>
