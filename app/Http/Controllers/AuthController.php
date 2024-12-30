@@ -13,9 +13,14 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function processLogin()
+    public function processLogin(Request $request)
     {
-        return view('auth.login');
+        $url_callback = $request->input('url_callback');
+        if (Auth::check()) {
+            return redirect(route('admin.home'));
+        }
+
+        return view('auth.login', compact('url_callback'));
     }
 
     public function handleLogin(Request $request)
@@ -23,6 +28,7 @@ class AuthController extends Controller
         try {
             $loginRequest = $request->input('login_request');
             $password = $request->input('password');
+            $url_callback = $request->input('url_callback');
 
             $credentials = [
                 'password' => $password,
@@ -56,13 +62,13 @@ class AuthController extends Controller
             }
 
             $roleAdmin = Role::where('name', RoleName::ADMIN)->first();
-            if (!$roleAdmin){
+            if (!$roleAdmin) {
                 alert()->error('Role admin not found!');
                 return redirect()->back();
             }
 
             $user_role = RoleUser::where('user_id', $user->id)->where('role_id', $roleAdmin->id)->first();
-            if (!$user_role){
+            if (!$user_role) {
                 alert()->error('User is not permission!');
                 return redirect()->back();
             }
@@ -81,6 +87,9 @@ class AuthController extends Controller
                 $expiration_time = time() + 86400;
                 setCookie('accessToken', $token, $expiration_time, '/');
 
+                if ($url_callback) {
+                    return redirect($url_callback);
+                }
                 return redirect(route('admin.home'));
             }
 

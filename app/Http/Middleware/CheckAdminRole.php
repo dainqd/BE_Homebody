@@ -19,6 +19,8 @@ class   CheckAdminRole
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $currentUrl = $request->fullUrl();
+
         if (Auth::check()) {
             $user = Auth::user();
             $role_user = RoleUser::where('user_id', $user->id)->first();
@@ -26,8 +28,9 @@ class   CheckAdminRole
             if ($roleNames->contains(RoleName::ADMIN)) {
                 return $next($request);
             }
-            return redirect(route('error.forbidden'));
+            return redirect(route('error.forbidden') . '?callback=' . urlencode($currentUrl));
         }
-        return redirect(route('error.unauthorized'));
+
+        return redirect(route('error.unauthorized') . '?callback=' . urlencode($currentUrl));
     }
 }

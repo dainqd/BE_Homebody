@@ -1,43 +1,52 @@
 @extends('admin.layouts.master')
 @section('title')
-    Detail Partner Register
+    Detail Contact
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1>Partner Register</h1>
+        <h1>Contact</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Detail Partner Register</li>
+                <li class="breadcrumb-item active">Detail Contact</li>
             </ol>
         </nav>
     </div>
 
     <section class="section">
         <table class="table table-bordered">
+            <colgroup>
+                <col width="10%">
+                <col width="40%">
+                <col width="10%">
+                <col width="40%">
+            </colgroup>
             <tbody>
             <tr>
-                <th scope="row">Name</th>
-                <td>{{ $partner->name }}</td>
-                <th scope="row">Status</th>
-                <td>{{ $partner->status }}</td>
+                <th scope="row">First Name</th>
+                <td>{{ $contact->first_name }}</td>
+                <th scope="row">Last Name</th>
+                <td>{{ $contact->last_name }}</td>
             </tr>
             <tr>
                 <th scope="row">Email</th>
-                <td>{{ $partner->email }}</td>
-                <th scope="row">Created At</th>
-                <td>{{ $partner->created_at }}</td>
+                <td>{{ $contact->email }}</td>
+                <th scope="row">Subject</th>
+                <td>{{ $contact->subject }}</td>
             </tr>
             <tr>
-                <th scope="row">Phone</th>
-                <td>{{ $partner->phone }}</td>
-                <th scope="row">Updated At</th>
-                <td>{{ $partner->updated_at }}</td>
+                <th scope="row">Created Time</th>
+                <td>{{ $contact->created_at }}</td>
+                <th scope="row">Status</th>
+                <td>{{ $contact->status }}</td>
             </tr>
-            @if($partner->status == \App\Enums\PartnerRegisterStatus::PENDING)
+            <tr>
+                <th scope="row">Message</th>
+                <td colspan="3">{{ $contact->message }}</td>
+            </tr>
+            @if($contact->status == \App\Enums\ContactStatus::PENDING)
                 <tr>
                     <td colspan="4">
-                        <button class="btn btn-success btnApproveAndCreate" type="button">Approve and Create</button>
                         <button class="btn btn-primary btnApprove" type="button">Approve</button>
                         <button class="btn btn-warning btnReject" type="button">Reject</button>
                         <button class="btn btn-danger btnDelete" type="button">Delete</button>
@@ -48,25 +57,20 @@
         </table>
     </section>
     <script>
-        $('.btnApproveAndCreate').on('click', function () {
-            if (confirm('Are you want to approve and create partner?')) {
-                updatePartner('approve_create', 'update');
-            }
-        });
         $('.btnApprove').on('click', function () {
-            if (confirm('Are you want to approve partner?')) {
+            if (confirm('Are you want to approve contact?')) {
                 updatePartner('approve', 'update');
             }
         })
 
         $('.btnReject').on('click', function () {
-            if (confirm('Are you want to reject partner?')) {
+            if (confirm('Are you want to reject contact?')) {
                 updatePartner('reject', 'update');
             }
         });
 
         $('.btnDelete').on('click', function () {
-            if (confirm('Are you want to delete partner?')) {
+            if (confirm('Are you want to delete contact?')) {
                 updatePartner('delete', 'delete');
             }
         });
@@ -76,21 +80,18 @@
             let status;
             let update = 'N';
             if (type === 'approve') {
-                status = `{{ \App\Enums\PartnerRegisterStatus::APPROVED }}`;
-            } else if (type === 'approve_create') {
-                status = `{{ \App\Enums\PartnerRegisterStatus::APPROVED }}`;
-                update = 'Y';
+                status = `{{ \App\Enums\ContactStatus::APPROVED }}`;
             } else {
-                status = `{{ \App\Enums\PartnerRegisterStatus::REJECTED }}`;
+                status = `{{ \App\Enums\ContactStatus::REJECTED }}`;
             }
 
             let url;
             let method;
             if (mode === 'update') {
-                url = `{{ route('api.admin.partner.register.update', $partner->id) }}`;
+                url = `{{ route('api.admin.contacts.update', $contact->id) }}`;
                 method = 'POST';
             } else {
-                url = `{{ route('api.admin.partner.register.delete', $partner->id) }}`;
+                url = `{{ route('api.admin.contacts.delete', $contact->id) }}`;
                 method = 'DELETE';
             }
 
@@ -112,10 +113,17 @@
                 },
                 async: false,
                 success: function (data, textStatus) {
-                    alert('Partner register updated successfully');
-                    loadingPage();
-                    console.log(data)
-                    window.location.reload();
+                    if (mode === 'update') {
+                        alert('Contact updated successfully');
+                        loadingPage();
+                        console.log(data)
+                        window.location.reload();
+                    } else {
+                        alert('Contact delete successfully');
+                        loadingPage();
+                        console.log(data)
+                        window.location.href = '{{ route('admin.contacts.list') }}';
+                    }
                 },
                 error: function (request, status, error) {
                     let data = JSON.parse(request.responseText);
