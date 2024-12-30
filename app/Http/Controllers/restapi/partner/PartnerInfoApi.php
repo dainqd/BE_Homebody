@@ -91,9 +91,6 @@ class PartnerInfoApi extends Api
             $email = $request->input('email');
             $gender = $request->input('gender');
 
-            $thumbnail = $request->input('thumbnail');
-            $gallery = $request->input('gallery');
-
             $about = $request->input('about');
             $experience = $request->input('experience');
             $status = PartnerInformationStatus::ACTIVE;
@@ -118,7 +115,22 @@ class PartnerInfoApi extends Api
             $partner_->phone = $phone;
             $partner_->email = $email;
             $partner_->gender = $gender;
-            $partner_->thumbnail = $thumbnail;
+
+            if ($request->hasFile('thumbnail')) {
+                $item = $request->file('thumbnail');
+                $itemPath = $item->store('partner', 'public');
+                $thumbnail = asset('storage/' . $itemPath);
+                $partner_->thumbnail = $thumbnail;
+            }
+
+            if ($request->hasFile('gallery')) {
+                $galleryPaths = array_map(function ($image) {
+                    $itemPath = $image->store('partner', 'public');
+                    return asset('storage/' . $itemPath);
+                }, $request->file('gallery'));
+                $gallery = implode(',', $galleryPaths);
+            }
+
             $partner_->gallery = $gallery;
             $partner_->address = $address;
             $partner_->longitude = $longitude;
