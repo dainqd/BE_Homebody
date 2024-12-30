@@ -59,16 +59,16 @@
 
         <!-- Start Orders Nav -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.orders.*') ? '' : 'collapsed' }}" data-bs-target="#tables-nav"
+            <a class="nav-link {{ Request::routeIs('admin.bookings.*') ? '' : 'collapsed' }}" data-bs-target="#tables-nav"
                data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Order</span><i
+                <i class="bi bi-layout-text-window-reverse"></i><span>Booking</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="tables-nav" class="nav-content collapse {{ Request::routeIs('admin.orders.*') ? 'show' : '' }}"
+            <ul id="tables-nav" class="nav-content collapse {{ Request::routeIs('admin.bookings.*') ? 'show' : '' }}"
                 data-bs-parent="#sidebar-nav">
                 <li>
-                    <a class="{{ Request::routeIs('admin.orders.list') ? 'active' : '' }}" href="">
-                        <i class="bi bi-circle"></i><span>List Order</span>
+                    <a class="{{ Request::routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.bookings.list') }}">
+                        <i class="bi bi-circle"></i><span>List Booking</span>
                     </a>
                 </li>
             </ul>

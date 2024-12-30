@@ -123,10 +123,17 @@
                 },
                 async: false,
                 success: function (data, textStatus) {
-                    alert('Partner register updated successfully');
-                    loadingPage();
-                    console.log(data)
-                    window.location.reload();
+                    if (mode === 'update') {
+                        alert('Partner register updated successfully');
+                        loadingPage();
+                        console.log(data)
+                        window.location.reload();
+                    } else {
+                        alert('Partner register delete successfully');
+                        loadingPage();
+                        console.log(data)
+                        window.location.href = '{{ route('admin.partner.register.list') }}';
+                    }
                 },
                 error: function (request, status, error) {
                     let data = JSON.parse(request.responseText);

@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\admin\AdminAnswerController;
+use App\Http\Controllers\admin\AdminBookingController;
 use App\Http\Controllers\admin\AdminCategoryController;
 use App\Http\Controllers\admin\AdminContactController;
 use App\Http\Controllers\admin\AdminCouponController;
@@ -54,6 +55,11 @@ Route::group(['prefix' => 'contacts'], function () {
     Route::get('list', [AdminContactController::class, 'list'])->name('admin.contacts.list');
     Route::get('detail/{id}', [AdminContactController::class, 'detail'])->name('admin.contacts.detail');
     Route::post('update/{id}', [AdminContactController::class, 'update'])->name('admin.contacts.update');
+});
+
+Route::group(['prefix' => 'bookings'], function () {
+    Route::get('list', [AdminBookingController::class, 'list'])->name('admin.bookings.list');
+    Route::get('detail/{id}', [AdminBookingController::class, 'detail'])->name('admin.bookings.detail');
 });
 
 Route::group(['prefix' => 'app'], function () {

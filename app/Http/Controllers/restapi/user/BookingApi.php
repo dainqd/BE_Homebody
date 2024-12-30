@@ -177,6 +177,9 @@ class BookingApi extends Api
 
             $booking->partner_id = $partner_id;
             $booking->total_price = $total_price;
+            $booking->discount_price = 0;
+            $booking->vat = 0;
+            $booking->main_total_price = $total_price;
 
             if ($homemade == 'Y') {
                 $booking->homemade = 'Y';

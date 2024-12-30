@@ -69,6 +69,6 @@ Route::group(['prefix' => 'reviews'], function () {
 });
 
 Route::group(['prefix' => 'contacts'], function () {
-    Route::post('update', [AdminContactApi::class, 'update'])->name('api.admin.contacts.update');
-    Route::delete('delete', [AdminContactApi::class, 'delete'])->name('api.admin.contacts.delete');
+    Route::post('update/{id}', [AdminContactApi::class, 'update'])->name('api.admin.contacts.update');
+    Route::delete('delete/{id}', [AdminContactApi::class, 'delete'])->name('api.admin.contacts.delete');
 });
