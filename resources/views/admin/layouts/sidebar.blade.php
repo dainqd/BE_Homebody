@@ -59,7 +59,8 @@
 
         <!-- Start Orders Nav -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.bookings.*') ? '' : 'collapsed' }}" data-bs-target="#tables-nav"
+            <a class="nav-link {{ Request::routeIs('admin.bookings.*') ? '' : 'collapsed' }}"
+               data-bs-target="#tables-nav"
                data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>Booking</span><i
                     class="bi bi-chevron-down ms-auto"></i>
@@ -67,7 +68,8 @@
             <ul id="tables-nav" class="nav-content collapse {{ Request::routeIs('admin.bookings.*') ? 'show' : '' }}"
                 data-bs-parent="#sidebar-nav">
                 <li>
-                    <a class="{{ Request::routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.bookings.list') }}">
+                    <a class="{{ Request::routeIs('admin.bookings.*') ? 'active' : '' }}"
+                       href="{{ route('admin.bookings.list') }}">
                         <i class="bi bi-circle"></i><span>List Booking</span>
                     </a>
                 </li>
@@ -179,7 +181,8 @@
 
         <!--Start Profile Page Nav -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('admin.profile.*') ? 'active' : 'collapsed' }}" href="">
+            <a class="nav-link {{ Request::routeIs('admin.profile.show') ? 'active' : 'collapsed' }}"
+               href="{{ route('admin.profile.show') }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>

@@ -18,6 +18,7 @@ use App\Http\Controllers\admin\AdminContactController;
 use App\Http\Controllers\admin\AdminCouponController;
 use App\Http\Controllers\admin\AdminHomeController;
 use App\Http\Controllers\admin\AdminPartnerRegisterController;
+use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\admin\AdminQuestionController;
 use App\Http\Controllers\admin\AdminRevenueController;
 use App\Http\Controllers\admin\AdminSettingController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\admin\AdminUserController;
 Route::get('/dashboard', [AdminHomeController::class, 'dashboard'])->name('admin.home');
 
 Route::get('/revenues/show', [AdminRevenueController::class, 'index'])->name('admin.revenues.show');
+Route::get('/profile', [AdminProfileController::class, 'index'])->name('admin.profile.show');
 
 Route::group(['prefix' => 'partner-register'], function () {
     Route::get('/list', [AdminPartnerRegisterController::class, 'list'])->name('admin.partner.register.list');
