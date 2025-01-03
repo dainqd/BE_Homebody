@@ -54,6 +54,7 @@ class PartnerServiceApi extends Api
 
             $services = Services::where('user_id', $userID)
                 ->orderBy('id', 'desc')
+                ->where('status', '!=', ServiceStatus::DELETED)
                 ->get();
             $data = returnMessage(1, 200, $services, 'Success');
             return response($data, 200);

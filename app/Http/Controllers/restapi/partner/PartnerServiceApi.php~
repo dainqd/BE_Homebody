@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PartnerInformations;
 use App\Models\Services;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PartnerServiceApi extends Api
