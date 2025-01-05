@@ -4,10 +4,8 @@ namespace App\Http\Controllers\restapi\partner;
 
 use App\Enums\PartnerInformationStatus;
 use App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 use App\Models\PartnerInformations;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PartnerInfoApi extends Api
@@ -24,7 +22,47 @@ class PartnerInfoApi extends Api
         $this->user = JWTAuth::parseToken()->authenticate()->toArray();
     }
 
+
     /**
+     * GET PARTNER INFORMATION
+     *
+     * @OA\Get(
+     *     path="/api/partner/show",
+     *     tags={"Partner"},
+     *     summary="Get partner information",
+     *     security={{"bearerAuth":{}}},
+     *     description="Get partner information",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized user"
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Service not found"
+     *     )
+     * )
+     */
+    public function showInfo()
+    {
+        try {
+            $userID = $this->user['id'];
+
+            $partner_ = PartnerInformations::where('user_id', $userID)->first() ?? [];
+            $data = returnMessage(1, 200, $partner_, 'Get information successfully!');
+            return response($data, 200);
+        } catch (\Exception $exception) {
+            $data = returnMessage(-1, 400, '', $exception->getMessage());
+            return response($data, 400);
+        }
+    }
+
+    /**
+     * UPDATE PARTNER INFORMATION
+     *
      * @OA\Post(
      *     path="/api/partner/update/info",
      *     summary="Save partner information",
