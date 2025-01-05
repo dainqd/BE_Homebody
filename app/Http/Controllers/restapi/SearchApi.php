@@ -242,7 +242,7 @@ class SearchApi extends Api
             $user_id = $request->input('user_id');
 
             $partnerInformation = PartnerInformations::where('user_id', $user_id)->first();
-            $result['partner_information'] = $partnerInformation?->toArray();
+            $result['partner_information'] = $partnerInformation?->toArray() ?? 'Partner information not updated!';
 
             $categories = Categories::where('categories.status', CategoryStatus::ACTIVE)
                 ->join('services', 'categories.id', '=', 'services.category_id')

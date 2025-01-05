@@ -228,30 +228,10 @@ class AdminPartnerRegisterApi extends Api
             $partner->status = $status;
             $partner->save();
 
-            if ($is_update === 'Y') {
-                $user = new User();
-
-                $user->email = $partner->email;
+            $user = User::where('email', $partner->email)->first();
+            if ($user) {
                 $user->status = UserStatus::ACTIVE;
-                $user->phone = $partner->phone;
-                $user->password = Hash::make($partner->password ?? '123456');
-                $user->full_name = $partner->name;
-
                 $user->save();
-
-                (new MainController())->saveRolePartner($user->id);
-
-                $email = $partner->email;
-
-                $data = [
-                    'email' => $email,
-                    'password' => $partner->password ?? '123456'
-                ];
-
-                Mail::send('layouts.email.join-partner-success', $data, function ($message) use ($email) {
-                    $message->to($email, 'Congratulatory email for successful partner registration')->subject('Congratulatory email for successful partner registration');
-                    $message->from('devfullstack@gmail.com', 'Congratulatory successful partner registration');
-                });
             }
 
             $data = returnMessage(1, 200, $partner, 'Update success!');
