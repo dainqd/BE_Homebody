@@ -160,7 +160,7 @@ class PartnerInfoApi extends Api
                 $thumbnail = asset('storage/' . $itemPath);
                 $partner_->thumbnail = $thumbnail;
             }
-
+            $gallery = '';
             if ($request->hasFile('gallery')) {
                 $galleryPaths = array_map(function ($image) {
                     $itemPath = $image->store('partner', 'public');

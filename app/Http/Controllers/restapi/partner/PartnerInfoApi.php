@@ -6,6 +6,7 @@ use App\Enums\PartnerInformationStatus;
 use App\Http\Controllers\Api;
 use App\Models\PartnerInformations;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PartnerInfoApi extends Api
