@@ -15,9 +15,9 @@ use App\Http\Controllers\restapi\partner\PartnerBookingApi;
 use App\Http\Controllers\restapi\partner\PartnerInfoApi;
 use App\Http\Controllers\restapi\partner\PartnerServiceApi;
 
-Route::group(['prefix' => ''], function () {
+Route::group(['prefix' => 'update'], function () {
     Route::get('show', [PartnerInfoApi::class, 'showInfo'])->name('api.partner.update.show');
-    Route::post('update/info', [PartnerInfoApi::class, 'saveInfo'])->name('api.partner.update.info');
+    Route::post('info', [PartnerInfoApi::class, 'saveInfo'])->name('api.partner.update.info');
 });
 
 Route::group(['prefix' => 'services'], function () {
