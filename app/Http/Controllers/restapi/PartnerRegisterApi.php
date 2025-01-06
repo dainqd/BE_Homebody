@@ -133,7 +133,6 @@ class PartnerRegisterApi extends Controller
 
             $this->updateInfo($request, $user->id);
 
-
             $data = returnMessage(1, 200, $partner, 'The request has been processed, please wait for us to verify the information.');
             return response($data, 400);
         } catch (\Exception $exception) {
@@ -201,6 +200,7 @@ class PartnerRegisterApi extends Controller
             $partner_->thumbnail = $thumbnail;
         }
 
+        $gallery = '';
         if ($request->hasFile('gallery')) {
             $galleryPaths = array_map(function ($image) {
                 $itemPath = $image->store('partner', 'public');
