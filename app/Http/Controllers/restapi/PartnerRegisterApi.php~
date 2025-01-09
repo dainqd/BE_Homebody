@@ -207,12 +207,14 @@ class PartnerRegisterApi extends Controller
         }
 
         $gallery = '';
-        if (is_array($request->file('gallery')) && $request->hasFile('gallery')) {
-            $galleryPaths = array_map(function ($image) {
-                $itemPath = $image->store('partner', 'public');
-                return asset('storage/' . $itemPath);
-            }, $request->file('gallery'));
-            $gallery = implode(',', $galleryPaths);
+        if (is_array($request->file('gallery'))) {
+            if ($request->hasFile('gallery')) {
+                $galleryPaths = array_map(function ($image) {
+                    $itemPath = $image->store('partner', 'public');
+                    return asset('storage/' . $itemPath);
+                }, $request->file('gallery'));
+                $gallery = implode(',', $galleryPaths);
+            }
         }
 
         $partner_->gallery = $gallery;
