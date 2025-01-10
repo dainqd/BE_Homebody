@@ -18,6 +18,7 @@ use App\Http\Controllers\restapi\LocationApi;
 use App\Http\Controllers\restapi\PartnerRegisterApi;
 use App\Http\Controllers\restapi\SearchApi;
 use App\Http\Controllers\restapi\ServiceApi;
+use App\Http\Controllers\TestController;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [AuthApi::class, 'login'])->name('restapi.auth.login');
@@ -51,5 +52,9 @@ Route::group(['prefix' => 'locations'], function () {
 
 Route::group(['prefix' => 'currencies'], function () {
     Route::get('convert', [CurrencyApi::class, 'convert'])->name('restapi.currencies.convert');
+});
+
+Route::group(['prefix' => 'translates'], function () {
+    Route::get('convert', [TestController::class, 'translate'])->name('restapi.translate');
 });
 
